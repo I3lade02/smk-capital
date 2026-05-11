@@ -10,8 +10,8 @@ import { StatsSection } from "./components/sections/StatsSection";
 
 function App() {
   return (
-    <main className="min-h-screen bg-[#f7f3ed] text-[#061a34]">
-      <div className="mx-auto grid min-h-screen max-w-480 lg:grid-cols-[220px_1fr]">
+    <main className="min-h-screen w-full bg-[#f7f3ed] text-[#061a34]">
+      <div className="grid min-h-screen w-full lg:grid-cols-[220px_1fr]">
         <Sidebar />
 
         <div className="relative overflow-hidden">

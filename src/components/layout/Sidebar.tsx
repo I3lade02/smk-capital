@@ -11,7 +11,7 @@ export function Sidebar() {
             <img
               src={logoEdit}
               alt={`${siteConfig.name} logo`}
-              className="absolute left-1/2 top-1/2 h-[444px] w-[296px] max-w-none -translate-x-1/2 -translate-y-[46%] object-cover object-center"
+              className="absolute left-1/2 top-1/2 h-111 w-74 max-w-none -translate-x-1/2 translate-y-[-46%] object-cover object-center"
             />
           </div>
         </div>

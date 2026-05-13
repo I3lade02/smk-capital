@@ -1,5 +1,6 @@
 import { cn } from "../../lib/cn";
 import { siteConfig } from "../../constants/site";
+import logoEdit from "../../assets/logo_edit.png";
 
 type LogoProps = {
   variant?: "light" | "dark";
@@ -10,26 +11,20 @@ export function Logo({ variant = "dark", compact = false }: LogoProps) {
   const isLight = variant === "light";
 
   return (
-    <div className="flex flex-col items-center text-center">
-      <div
+    <div
+      className={cn(
+        "flex items-center justify-center",
+        isLight && "drop-shadow-[0_12px_30px_rgba(0,0,0,0.2)]",
+      )}
+    >
+      <img
+        src={logoEdit}
+        alt={`${siteConfig.name} logo`}
         className={cn(
-          "font-serif leading-none text-[#c89750]",
-          compact ? "text-5xl" : "text-7xl",
+          "w-auto object-contain",
+          compact ? "h-24" : "h-[239px]",
         )}
-      >
-        A
-      </div>
-
-      <div
-        className={cn(
-          "mt-2 text-[10px] uppercase tracking-[0.35em]",
-          isLight ? "text-white" : "text-[#061a34]",
-        )}
-      >
-        {siteConfig.shortName}
-        <br />
-        Finance
-      </div>
+      />
     </div>
   );
 }

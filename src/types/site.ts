@@ -1,27 +1,27 @@
-import type { TablerIcon } from "@tabler/icons-react";
+import type { Icon } from "@tabler/icons-react";
 
 export type NavItem = {
-    label: string;
-    href: string;
-    icon?: TablerIcon;
+  label: string;
+  href: string;
+  icon?: Icon;
 };
 
 export type ServiceItem = {
-    number: string;
-    title: string;
-    description: string;
-    href: string;
-    icon: TablerIcon;
+  number: string;
+  title: string;
+  description: string;
+  href: string;
+  icon: Icon;
 };
 
 export type StatItem = {
-    value: string;
-    label: string;
-    icon: TablerIcon;
+  value: string;
+  label: string;
+  icon: Icon;
 };
 
 export type BenefitItem = {
-    title: string;
-    description: string;
-    icon: TablerIcon;
+  title: string;
+  description: string;
+  icon: Icon;
 };

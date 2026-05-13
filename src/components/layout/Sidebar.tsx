@@ -1,43 +1,46 @@
-import logoEdit from "../../assets/logo_edit.png";
+import { NavLink } from "react-router-dom";
 import { sidebarNavigation } from "../../constants/navigation";
 import { siteConfig } from "../../constants/site";
+import { Logo } from "../ui/Logo";
 
 export function Sidebar() {
   return (
     <aside className="hidden bg-[#061a34] text-white lg:flex lg:flex-col lg:items-center lg:justify-between">
       <div className="w-full">
-        <div className="flex h-80 items-center justify-center overflow-hidden border-b border-white/10">
-          <div className="relative h-full w-full overflow-hidden">
-            <img
-              src={logoEdit}
-              alt={`${siteConfig.name} logo`}
-              className="absolute left-1/2 top-1/2 h-111 w-74 max-w-none -translate-x-1/2 translate-y-[-46%] object-cover object-center"
-            />
-          </div>
-        </div>
+        <NavLink
+          to="/"
+          className="flex h-59.75 items-center justify-center border-b border-white/10"
+        >
+          <Logo variant="light" />
+        </NavLink>
 
-        <nav className="mt-7 flex flex-col gap-2 px-5">
-          {sidebarNavigation.map((item, index) => {
+        <nav className="mt-8 flex flex-col gap-1 px-6">
+          {sidebarNavigation.map((item) => {
             const Icon = item.icon;
 
             return (
-              <a
+              <NavLink
                 key={item.label}
-                href={item.href}
-                className={`flex items-center gap-4 rounded-2xl px-5 py-4 text-sm font-semibold transition hover:bg-white/10 ${
-                  index === 0 ? "text-[#d5a660]" : "text-white/80"
-                }`}
+                to={item.href}
+                end={item.href === "/"}
+                className={({ isActive }) =>
+                  `flex items-center gap-4 rounded-2xl border px-4 py-4 text-xs font-semibold transition hover:bg-white/10 ${
+                    isActive
+                      ? "border-[#c89750]/35 bg-white/10 text-[#f3c77f] shadow-[inset_0_0_0_1px_rgba(201,151,80,0.12)]"
+                      : "border-transparent text-white/80"
+                  }`
+                }
               >
-                {Icon ? <Icon size={20} className="text-[#d5a660]" /> : null}
+                {Icon ? <Icon size={17} className="text-[#d5a660]" /> : null}
                 {item.label}
-              </a>
+              </NavLink>
             );
           })}
         </nav>
       </div>
 
       <div className="mb-16 flex flex-col items-center">
-        <p className="max-w-28 text-center text-[11px] uppercase leading-5 tracking-[0.28em] text-white/75">
+        <p className="max-w-16 text-[10px] uppercase leading-5 tracking-[0.35em] text-white/75">
           {siteConfig.slogan}
         </p>
         <div className="mt-8 h-px w-12 bg-[#c89750]" />

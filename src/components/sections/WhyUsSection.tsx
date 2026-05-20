@@ -8,7 +8,7 @@ export function WhyUsSection() {
         <div>
           <SectionKicker>Proč SMK Capital</SectionKicker>
           <h2 className="font-serif text-5xl leading-tight tracking-[-0.03em]">
-            Řešíme finance tak, aby dávaly smysl dlouhodobě.
+            Spravujeme finance tak, aby dávaly smysl dlouhodobě.
           </h2>
           <p className="mt-6 max-w-xl text-lg leading-8 text-[#061a34]/65">
             Neřešíme jen jednotlivé smlouvy. Stavíme systém, který vám dává
@@ -23,7 +23,7 @@ export function WhyUsSection() {
             return (
               <article
                 key={benefit.title}
-                className="rounded-3xl bg-[var(--section-bg)] p-7 shadow-[0_18px_40px_rgba(6,26,52,0.05)]"
+                className="rounded-3xl bg-(--section-bg) p-7 shadow-[0_18px_40px_rgba(6,26,52,0.05)]"
               >
                 <Icon size={38} strokeWidth={1.4} className="text-[#c89750]" />
                 <h3 className="mt-6 font-serif text-2xl leading-tight">

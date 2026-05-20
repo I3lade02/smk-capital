@@ -37,7 +37,7 @@ export function ContactSection() {
   return (
     <section
       id="contact"
-      className="bg-[var(--section-bg)] px-5 py-16 md:px-12 lg:px-16"
+      className="bg-(--section-bg) px-5 py-16 md:px-12 lg:px-16"
     >
       <div className="grid overflow-hidden rounded-3xl bg-white shadow-[0_25px_80px_rgba(6,26,52,0.1)] lg:grid-cols-[0.75fr_1.35fr_0.8fr]">
         <div className="bg-[#f4efe7] p-9">

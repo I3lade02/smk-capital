@@ -27,7 +27,7 @@ const contactItems = [
     : []),
   {
     label: "Dostupnost",
-    value: "Po–Pá, 9:00–17:00",
+    value: "Po–Ne, 8:00–20:00",
     icon: IconClockHour3,
   },
 ];
@@ -55,7 +55,7 @@ export function ContactPage() {
             const Icon = item.icon;
 
             return (
-              <div key={item.label} className="rounded-3xl bg-[var(--section-bg)] p-7">
+              <div key={item.label} className="rounded-3xl bg-(--section-bg) p-7">
                 <Icon size={36} strokeWidth={1.4} className="text-[#c89750]" />
                 <h3 className="mt-6 font-serif text-2xl">{item.label}</h3>
                 <p className="mt-3 text-sm leading-6 text-[#061a34]/60">
@@ -69,7 +69,7 @@ export function ContactPage() {
 
       <ContactSection />
 
-      <section className="bg-[var(--section-bg)] px-5 pb-20 md:px-12 lg:px-16">
+      <section className="bg-(--section-bg) px-5 pb-20 md:px-12 lg:px-16">
         <div className="mb-12 max-w-3xl">
           <SectionKicker>Co můžete poptat</SectionKicker>
           <h2 className="font-serif text-5xl tracking-[-0.03em]">

@@ -8,7 +8,7 @@ export function ServicesSection() {
   return (
     <section
       id="services"
-      className="relative bg-[var(--section-bg)] px-5 pb-20 md:px-12 lg:px-16"
+      className="relative bg-(--section-bg) px-5 pb-20 md:px-12 lg:px-16"
     >
       <div className="grid gap-8 xl:grid-cols-[300px_1fr]">
         <div className="overflow-hidden rounded-[28px] rounded-tr-[90px] bg-white shadow-[0_25px_70px_rgba(6,26,52,0.1)]">
@@ -21,7 +21,7 @@ export function ServicesSection() {
           <div className="p-8">
             <SectionKicker>Přehled služeb</SectionKicker>
             <h2 className="font-serif text-4xl leading-tight">
-              Všechny důležité finance na jednom místě
+              Všechny finanční produkty na jednom místě
             </h2>
             <p className="mt-5 text-sm leading-7 text-[#061a34]/60">
               Pojištění, financování, investice i správa smluv řešíme jako jeden

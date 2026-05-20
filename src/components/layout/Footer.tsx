@@ -4,7 +4,7 @@ import {
   IconBrandLinkedin,
 } from "@tabler/icons-react";
 import { siteConfig } from "../../constants/site";
-import { services } from "../../constants/services";
+import { serviceCategories } from "../../constants/services";
 import { Logo } from "../ui/Logo";
 
 const socialLinks = [
@@ -36,7 +36,7 @@ export function Footer() {
         <div>
           <h3 className="mb-4 text-sm font-bold">Služby</h3>
           <ul className="space-y-2 text-sm text-[#061a34]/65">
-            {services.map((service) => (
+            {serviceCategories.map((service) => (
               <li key={service.title}>
                 <a href={service.href}>{service.title}</a>
               </li>

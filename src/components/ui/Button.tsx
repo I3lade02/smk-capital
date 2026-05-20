@@ -15,9 +15,25 @@ export function Button({
   variant = "primary",
   className,
 }: ButtonProps) {
+  const isSectionLink = href.startsWith("#") && href.length > 1;
+
   return (
     <a
       href={href}
+      onClick={(event) => {
+        if (!isSectionLink) {
+          return;
+        }
+
+        const target = document.getElementById(href.slice(1));
+
+        if (!target) {
+          return;
+        }
+
+        event.preventDefault();
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }}
       className={cn(
         "inline-flex items-center justify-center gap-3 rounded-full px-7 py-4 text-sm font-semibold transition",
         variant === "primary" &&

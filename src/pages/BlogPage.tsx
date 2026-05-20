@@ -40,7 +40,7 @@ export function BlogPage() {
         image={images.car}
       />
 
-      <section className="bg-[#fbfaf7] px-5 py-20 md:px-12 lg:px-16">
+      <section className="bg-[var(--section-bg)] px-5 py-20 md:px-12 lg:px-16">
         <div className="mb-12 max-w-3xl">
           <SectionKicker>Nejnovější články</SectionKicker>
           <h2 className="font-serif text-5xl tracking-[-0.03em]">

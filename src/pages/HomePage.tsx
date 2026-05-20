@@ -1,19 +1,21 @@
+import { AboutSection } from "../components/sections/AboutSection";
 import { ContactSection } from "../components/sections/ContactSection";
 import { HeroSection } from "../components/sections/HeroSection";
-import { MortgageSection } from "../components/sections/MortgageSection";
-import { QuoteSection } from "../components/sections/QuoteSection";
+import { ProcessSection } from "../components/sections/ProcessSection";
+import { ReviewsSection } from "../components/sections/ReviewsSection";
 import { ServicesSection } from "../components/sections/ServicesSection";
-import { StatsSection } from "../components/sections/StatsSection";
+import { WhyUsSection } from "../components/sections/WhyUsSection";
 
 export function HomePage() {
-    return (
-        <>
-            <HeroSection />
-            <ServicesSection />
-            <StatsSection />
-            <MortgageSection />
-            <QuoteSection />
-            <ContactSection />
-        </>
-    );
+  return (
+    <>
+      <HeroSection />
+      <ServicesSection />
+      <AboutSection />
+      <ProcessSection />
+      <WhyUsSection />
+      <ReviewsSection />
+      <ContactSection />
+    </>
+  );
 }

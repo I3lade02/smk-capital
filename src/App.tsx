@@ -5,7 +5,7 @@ import { AppRoutes } from "./routes/AppRoutes";
 
 export default function App() {
   return (
-    <main className="min-h-screen bg-[#f7f3ed] text-[#061a34]">
+    <main className="min-h-screen bg-[var(--page-bg)] text-[#061a34]">
       <div className="mx-auto grid min-h-screen max-w-480 lg:grid-cols-[160px_1fr]">
         <Sidebar />
 

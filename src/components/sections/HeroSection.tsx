@@ -1,34 +1,51 @@
 import { IconShieldCheck } from "@tabler/icons-react";
-import { images } from "../../constants/site";
+import { heroHighlights } from "../../constants/home";
+import { images, siteConfig } from "../../constants/site";
 import { Button } from "../ui/Button";
 
 export function HeroSection() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden bg-[#fbfaf7] px-5 pb-20 pt-32 md:px-12 lg:px-16 lg:pb-28 lg:pt-28"
+      className="relative overflow-hidden bg-[var(--section-bg)] px-5 pb-20 pt-32 md:px-12 lg:px-16 lg:pb-28 lg:pt-28"
     >
       <div className="grid items-center gap-12 lg:grid-cols-[0.88fr_1.12fr]">
         <div className="relative z-10 max-w-2xl">
-          <h1 className="font-serif text-6xl leading-[0.92] tracking-tighter text-[#061a34] md:text-8xl xl:text-[112px]">
-            Finance
-            <br />s jistotou
+          <p className="inline-flex rounded-full border border-[#c89750]/25 bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.28em] text-[#9f7035] shadow-[0_16px_40px_rgba(6,26,52,0.08)]">
+            SMK CAPITAL
+          </p>
+
+          <h1 className="mt-6 font-serif text-6xl leading-[0.92] tracking-tighter text-[#061a34] md:text-8xl xl:text-[108px]">
+            Vy neřešíte nic.
             <br />
-            pro moderní
-            <br />
-            <span className="text-[#c89750]">život.</span>
+            <span className="text-[#c89750]">My řešíme vše.</span>
           </h1>
 
-          <p className="mt-7 max-w-xl text-lg leading-8 text-[#061a34]/70">
-            Pojištění, hypotéky a úvěry, které chrání vaše jistoty a podporují
-            vaše plány. Dnes, zítra i v budoucnu.
+          <p className="mt-7 max-w-xl text-xl font-semibold leading-8 text-[#061a34]">
+            {siteConfig.heroLead}
+          </p>
+
+          <p className="mt-4 max-w-xl text-lg leading-8 text-[#061a34]/70">
+            {siteConfig.heroDescription} Pomáháme s pojištěním, financováním,
+            investicemi i správou smluv.
           </p>
 
           <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-            <Button href="#services">Naše služby</Button>
-            <Button href="#contact" variant="secondary">
-              Nezávazná konzultace
+            <Button href="#contact">Požadavek na zavolání</Button>
+            <Button href="#services" variant="secondary">
+              Přehled služeb
             </Button>
+          </div>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            {heroHighlights.map((item) => (
+              <span
+                key={item}
+                className="rounded-full border border-[#061a34]/10 bg-white px-4 py-2 text-sm text-[#061a34]/65 shadow-[0_14px_35px_rgba(6,26,52,0.06)]"
+              >
+                {item}
+              </span>
+            ))}
           </div>
         </div>
 
@@ -47,8 +64,10 @@ export function HeroSection() {
                 <IconShieldCheck size={28} />
               </div>
               <div>
-                <p className="font-serif text-2xl">Vaše jistota.</p>
-                <p className="text-sm text-[#061a34]/60">Naše závazek.</p>
+                <p className="font-serif text-2xl">Telefonicky i osobně</p>
+                <p className="text-sm leading-6 text-[#061a34]/60">
+                  Finance i papíry řešíme za vás.
+                </p>
               </div>
             </div>
           </div>

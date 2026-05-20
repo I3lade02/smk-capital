@@ -1,46 +1,85 @@
 import {
-  IconBuildingBank,
+  IconCalculator,
   IconCar,
+  IconBuildingBank,
   IconCoin,
-  IconHeartHandshake,
-  IconHomeShield,
+  IconPhoneCall,
+  IconShieldCheck,
 } from "@tabler/icons-react";
-import type { ServiceItem } from "../types/site";
+import type { QuickActionItem, ServiceCategory } from "../types/site";
 
-export const services: ServiceItem[] = [
+export const serviceCategories: ServiceCategory[] = [
   {
     number: "01",
-    title: "Pojištění domácnosti",
-    description: "Ochrana vašeho domova, majetku i odpovědnosti.",
-    href: "#",
-    icon: IconHomeShield,
+    title: "Pojištění",
+    description:
+      "Kompletní krytí pro auto, domov, rodinu i podnikání na jednom místě.",
+    href: "/#/sluzby",
+    icon: IconShieldCheck,
+    items: [
+      "Povinné ručení a havarijní pojištění vozidel",
+      "Pojištění domácnosti a nemovitosti",
+      "Životní a úrazové pojištění",
+      "Cestovní pojištění",
+      "Pojištění podnikatelů a firem",
+      "Pojištění odpovědnosti",
+      "Flotilové pojištění",
+    ],
   },
   {
     number: "02",
-    title: "Pojištění vozidel",
-    description: "Povinné ručení, havarijní pojištění a asistence.",
-    href: "#",
-    icon: IconCar,
+    title: "Financování",
+    description:
+      "Úvěry a hypotéky nastavujeme podle vaší situace i dlouhodobého plánu.",
+    href: "/#/sluzby",
+    icon: IconBuildingBank,
+    items: [
+      "Spotřebitelské úvěry",
+      "Hypotéky",
+      "Konsolidace a refinancování",
+    ],
   },
   {
     number: "03",
-    title: "Hypotéky",
-    description: "Chytré financování bydlení s přehledným plánem.",
-    href: "#",
-    icon: IconBuildingBank,
-  },
-  {
-    number: "04",
-    title: "Úvěry",
-    description: "Řešení pro osobní, rodinné i podnikatelské cíle.",
-    href: "#",
+    title: "Investice a služby",
+    description:
+      "Dlouhodobá péče o finance, smlouvy i související administrativu.",
+    href: "/#/sluzby",
     icon: IconCoin,
+    items: [
+      "Investice (dlouhodobé zhodnocení kapitálu)",
+      "Energie (elektřina, plyn)",
+      "Odhady nemovitostí",
+      "Servis a správa smluv",
+      "Pomoc při vymáhání pojistného plnění",
+    ],
+  },
+];
+
+export const quickActions: QuickActionItem[] = [
+  {
+    title: "Požadavek na zavolání",
+    description:
+      "Zanechte na sebe telefon a e-mail. Ozveme se vám obratem a domluvíme další postup.",
+    label: "Chci zavolat zpět",
+    href: "#contact",
+    icon: IconPhoneCall,
+    highlighted: true,
   },
   {
-    number: "05",
-    title: "Životní pojištění",
-    description: "Jistota pro vás i vaše blízké v těžkých chvílích.",
-    href: "#",
-    icon: IconHeartHandshake,
+    title: "Orientační kalkulace autopojištění",
+    description:
+      "Online kalkulaci připravujeme. Zatím vám nachystáme orientační nabídku podle vašich údajů.",
+    label: "Poptat autopojištění",
+    href: "#contact",
+    icon: IconCar,
+  },
+  {
+    title: "Orientační kalkulace úvěru nebo hypotéky",
+    description:
+      "Projdeme s vámi záměr, příjmy i možnosti financování a připravíme orientační propočet.",
+    label: "Poptat propočet",
+    href: "#contact",
+    icon: IconCalculator,
   },
 ];

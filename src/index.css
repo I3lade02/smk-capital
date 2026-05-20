@@ -1,12 +1,17 @@
 @import "tailwindcss";
 
+:root {
+  --page-bg: #eee5d8;
+  --section-bg: #f2ece2;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  background: #f7f3ed;
+  background: var(--page-bg);
   font-family:
     Inter,
     ui-sans-serif,

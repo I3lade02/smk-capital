@@ -30,7 +30,7 @@ export function ReviewsSection() {
           {reviewCards.map((item) => (
             <div
               key={item}
-              className="rounded-3xl border border-white/10 bg-white/5 p-6"
+              className="interactive-card rounded-3xl border border-white/10 bg-white/5 p-6"
             >
               <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#c89750]">
                 Recenze

@@ -24,14 +24,14 @@ export function Sidebar() {
                 to={item.href}
                 end={item.href === "/"}
                 className={({ isActive }) =>
-                  `flex items-center gap-4 rounded-2xl border px-4 py-4 text-xs font-semibold transition hover:bg-white/10 ${
+                  `sidebar-link relative flex items-center gap-4 overflow-hidden rounded-2xl border px-4 py-4 text-xs font-semibold transition hover:bg-white/10 ${
                     isActive
                       ? "border-[#c89750]/35 bg-white/10 text-[#f3c77f] shadow-[inset_0_0_0_1px_rgba(201,151,80,0.12)]"
                       : "border-transparent text-white/80"
                   }`
                 }
               >
-                {Icon ? <Icon size={17} className="text-[#d5a660]" /> : null}
+                {Icon ? <Icon size={17} className="sidebar-link-icon text-[#d5a660]" /> : null}
                 {item.label}
               </NavLink>
             );

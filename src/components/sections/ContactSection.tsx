@@ -210,16 +210,33 @@ export function ContactSection() {
           </div>
 
           {status.type !== "idle" ? (
-            <p
+            <div
               aria-live="polite"
               className={
                 status.type === "success"
-                  ? "rounded-2xl bg-green-50 px-4 py-3 text-sm font-medium text-green-800"
+                  ? "rounded-3xl border border-green-200 bg-green-50 p-5 text-green-900 shadow-[0_16px_38px_rgba(15,122,79,0.1)]"
                   : "rounded-2xl bg-red-50 px-4 py-3 text-sm font-medium text-red-800"
               }
             >
-              {status.message}
-            </p>
+              {status.type === "success" ? (
+                <div className="flex gap-4">
+                  <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-green-600 text-white">
+                    <IconCheck size={22} stroke={2.2} />
+                  </div>
+                  <div>
+                    <p className="font-serif text-2xl leading-tight">
+                      Děkujeme, požadavek jsme přijali.
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-green-900/75">
+                      Ozveme se vám co nejdříve. Mezitím si můžete připravit
+                      aktuální smlouvy nebo základní informace k požadavku.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                status.message
+              )}
+            </div>
           ) : null}
         </form>
 

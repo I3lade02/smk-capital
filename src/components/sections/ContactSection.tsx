@@ -1,6 +1,13 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
-import { IconArrowRight, IconMail, IconMapPin, IconPhone } from "@tabler/icons-react";
+import {
+  IconArrowRight,
+  IconCheck,
+  IconLoader2,
+  IconMail,
+  IconMapPin,
+  IconPhone,
+} from "@tabler/icons-react";
 import { siteConfig } from "../../constants/site";
 
 const contactFormEndpoint =
@@ -160,10 +167,32 @@ export function ContactSection() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex items-center justify-center gap-3 rounded-full bg-[#061a34] px-7 py-4 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(6,26,52,0.18)] transition hover:bg-[#0b274b] disabled:cursor-not-allowed disabled:opacity-70"
+              className="contact-submit-button relative inline-flex min-w-46 items-center justify-center gap-3 overflow-hidden rounded-full bg-[#061a34] px-7 py-4 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(6,26,52,0.18)] transition hover:bg-[#0b274b] disabled:cursor-not-allowed"
+              data-state={
+                isSubmitting
+                  ? "loading"
+                  : status.type === "success"
+                    ? "success"
+                    : "idle"
+              }
             >
-              {isSubmitting ? "Odesílám..." : "Odeslat požadavek"}
-              <IconArrowRight size={17} stroke={1.8} />
+              <span className="contact-submit-shine" aria-hidden="true" />
+              <span className="relative z-10">
+                {isSubmitting
+                  ? "Odesílám..."
+                  : status.type === "success"
+                    ? "Odesláno"
+                    : "Odeslat požadavek"}
+              </span>
+              <span className="relative z-10 flex size-5 items-center justify-center">
+                {isSubmitting ? (
+                  <IconLoader2 className="contact-submit-spinner" size={18} stroke={1.9} />
+                ) : status.type === "success" ? (
+                  <IconCheck size={18} stroke={2.1} />
+                ) : (
+                  <IconArrowRight size={17} stroke={1.8} />
+                )}
+              </span>
             </button>
           </div>
 

@@ -12,6 +12,7 @@ import { siteConfig } from "../../constants/site";
 
 const contactFormEndpoint =
   import.meta.env.VITE_CONTACT_FORM_ENDPOINT ?? "contact.php";
+const contactFormTimeoutMs = 15000;
 
 type SubmitStatus =
   | { type: "idle"; message: "" }
@@ -20,6 +21,11 @@ type SubmitStatus =
 type ContactFormSubmitEvent = {
   preventDefault: () => void;
   currentTarget: HTMLFormElement;
+};
+
+type ContactFormResponse = {
+  success?: boolean;
+  message?: string;
 };
 
 export function ContactSection() {
@@ -42,12 +48,18 @@ export function ContactSection() {
     setIsSubmitting(true);
     setStatus({ type: "idle", message: "" });
 
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => {
+      controller.abort();
+    }, contactFormTimeoutMs);
+
     try {
       const response = await fetch(contactFormEndpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        signal: controller.signal,
         body: JSON.stringify({
           name,
           email,
@@ -62,13 +74,16 @@ export function ContactSection() {
         }),
       });
 
-      const data = (await response.json().catch(() => null)) as {
-        success?: boolean;
-        message?: string;
-      } | null;
+      const { data, hasInvalidJson } = await readContactFormResponse(response);
 
       if (!response.ok || data?.success === false) {
-        throw new Error(data?.message ?? "Zprávu se nepodařilo odeslat.");
+        throw new Error(getServerErrorMessage(response, data?.message));
+      }
+
+      if (hasInvalidJson) {
+        throw new Error(
+          "Zprávu se nepodařilo potvrdit, protože server vrátil nečitelnou odpověď. Zkuste to prosím znovu nebo nás kontaktujte přímo.",
+        );
       }
 
       setStatus({
@@ -79,12 +94,10 @@ export function ContactSection() {
     } catch (error) {
       setStatus({
         type: "error",
-        message:
-          error instanceof Error
-            ? error.message
-            : "Zprávu se nepodařilo odeslat.",
+        message: getSubmitErrorMessage(error),
       });
     } finally {
+      window.clearTimeout(timeoutId);
       setIsSubmitting(false);
     }
   }
@@ -197,16 +210,33 @@ export function ContactSection() {
           </div>
 
           {status.type !== "idle" ? (
-            <p
+            <div
               aria-live="polite"
               className={
                 status.type === "success"
-                  ? "rounded-2xl bg-green-50 px-4 py-3 text-sm font-medium text-green-800"
+                  ? "rounded-3xl border border-green-200 bg-green-50 p-5 text-green-900 shadow-[0_16px_38px_rgba(15,122,79,0.1)]"
                   : "rounded-2xl bg-red-50 px-4 py-3 text-sm font-medium text-red-800"
               }
             >
-              {status.message}
-            </p>
+              {status.type === "success" ? (
+                <div className="flex gap-4">
+                  <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-green-600 text-white">
+                    <IconCheck size={22} stroke={2.2} />
+                  </div>
+                  <div>
+                    <p className="font-serif text-2xl leading-tight">
+                      Děkujeme, požadavek jsme přijali.
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-green-900/75">
+                      Ozveme se vám co nejdříve. Mezitím si můžete připravit
+                      aktuální smlouvy nebo základní informace k požadavku.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                status.message
+              )}
+            </div>
           ) : null}
         </form>
 
@@ -255,6 +285,121 @@ type ContactLineProps = {
   text: string;
   href?: string;
 };
+
+async function readContactFormResponse(response: Response) {
+  const responseText = await response.text();
+
+  if (responseText.trim() === "") {
+    return {
+      data: null,
+      hasInvalidJson: response.ok,
+    };
+  }
+
+  try {
+    return {
+      data: JSON.parse(responseText) as ContactFormResponse,
+      hasInvalidJson: false,
+    };
+  } catch {
+    return {
+      data: null,
+      hasInvalidJson: response.ok,
+    };
+  }
+}
+
+function getServerErrorMessage(response: Response, serverMessage?: string) {
+  const messageFromServer = getUsefulServerMessage(serverMessage);
+
+  if (response.ok) {
+    return (
+      messageFromServer ??
+      "Zprávu se nepodařilo odeslat, protože server nepotvrdil doručení e-mailu. Zkuste to prosím znovu nebo nás kontaktujte přímo."
+    );
+  }
+
+  if (response.status === 400) {
+    return (
+      messageFromServer ??
+      "Zprávu se nepodařilo odeslat, protože formulář obsahuje neplatné nebo neúplné údaje. Zkontrolujte prosím jméno, e-mail a zprávu."
+    );
+  }
+
+  if (response.status === 401 || response.status === 403) {
+    return (
+      messageFromServer ??
+      "Zprávu se nepodařilo odeslat, protože server požadavek odmítl. Zkuste prosím obnovit stránku nebo nás kontaktujte přímo."
+    );
+  }
+
+  if (response.status === 404) {
+    return "Zprávu se nepodařilo odeslat, protože odesílací adresa formuláře nebyla na serveru nalezena.";
+  }
+
+  if (response.status === 405) {
+    return "Zprávu se nepodařilo odeslat, protože server nepovoluje odeslání formuláře touto metodou.";
+  }
+
+  if (response.status === 408) {
+    return "Zprávu se nepodařilo odeslat, protože server neodpověděl včas. Zkuste to prosím znovu.";
+  }
+
+  if (response.status === 413) {
+    return "Zprávu se nepodařilo odeslat, protože je příliš dlouhá. Zkraťte prosím text zprávy a odešlete formulář znovu.";
+  }
+
+  if (response.status === 429) {
+    return "Zprávu se nepodařilo odeslat, protože bylo odesláno příliš mnoho požadavků za krátkou dobu. Zkuste to prosím za chvíli.";
+  }
+
+  if (response.status >= 500) {
+    return (
+      messageFromServer ??
+      `Zprávu se nepodařilo odeslat z důvodu chyby serveru. Zkuste to prosím později nebo nám napište přímo na ${siteConfig.email}.`
+    );
+  }
+
+  return (
+    messageFromServer ??
+    `Zprávu se nepodařilo odeslat. Server odpověděl stavem ${response.status}. Zkuste to prosím znovu nebo nás kontaktujte přímo.`
+  );
+}
+
+function getSubmitErrorMessage(error: unknown) {
+  if (error instanceof DOMException && error.name === "AbortError") {
+    return "Zprávu se nepodařilo odeslat, protože server neodpověděl včas. Zkontrolujte prosím připojení a zkuste to znovu.";
+  }
+
+  if (error instanceof TypeError) {
+    return "Zprávu se nepodařilo odeslat, protože se nepodařilo spojit se serverem. Může jít o výpadek připojení, nedostupný server nebo blokované CORS nastavení.";
+  }
+
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  return "Zprávu se nepodařilo odeslat z neznámého důvodu. Zkuste to prosím znovu nebo nás kontaktujte přímo.";
+}
+
+function getUsefulServerMessage(serverMessage?: string) {
+  const trimmedMessage = serverMessage?.trim();
+
+  if (!trimmedMessage) {
+    return undefined;
+  }
+
+  const normalizedMessage = trimmedMessage.toLocaleLowerCase("cs-CZ");
+
+  if (
+    normalizedMessage === "zprávu se nepodařilo odeslat." ||
+    normalizedMessage === "zprávu se nepodařilo odeslat"
+  ) {
+    return undefined;
+  }
+
+  return trimmedMessage;
+}
 
 function ContactLine({ icon, text, href }: ContactLineProps) {
   const content = (

@@ -22,7 +22,7 @@ export function ProcessSection() {
         {processSteps.map((step) => (
           <article
             key={step.number}
-            className="rounded-3xl bg-white p-7 shadow-[0_22px_55px_rgba(6,26,52,0.08)]"
+            className="interactive-card rounded-3xl bg-white p-7 shadow-[0_22px_55px_rgba(6,26,52,0.08)]"
           >
             <p className="font-serif text-4xl text-[#c89750]">{step.number}</p>
             <h3 className="mt-6 font-serif text-2xl leading-tight">{step.title}</h3>

@@ -55,8 +55,8 @@ export function ContactPage() {
             const Icon = item.icon;
 
             return (
-              <div key={item.label} className="rounded-3xl bg-(--section-bg) p-7">
-                <Icon size={36} strokeWidth={1.4} className="text-[#c89750]" />
+              <div key={item.label} className="interactive-card rounded-3xl bg-(--section-bg) p-7">
+                <Icon size={36} strokeWidth={1.4} className="interactive-card-icon text-[#c89750]" />
                 <h3 className="mt-6 font-serif text-2xl">{item.label}</h3>
                 <p className="mt-3 text-sm leading-6 text-[#061a34]/60">
                   {item.value}
@@ -84,9 +84,9 @@ export function ContactPage() {
             return (
               <div
                 key={action.title}
-                className="rounded-3xl bg-white p-8 shadow-[0_22px_55px_rgba(6,26,52,0.08)]"
+                className="interactive-card rounded-3xl bg-white p-8 shadow-[0_22px_55px_rgba(6,26,52,0.08)]"
               >
-                <Icon size={40} strokeWidth={1.4} className="text-[#c89750]" />
+                <Icon size={40} strokeWidth={1.4} className="interactive-card-icon text-[#c89750]" />
                 <h3 className="mt-7 font-serif text-3xl leading-tight">
                   {action.title}
                 </h3>

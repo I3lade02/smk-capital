@@ -23,9 +23,9 @@ export function WhyUsSection() {
             return (
               <article
                 key={benefit.title}
-                className="rounded-3xl bg-(--section-bg) p-7 shadow-[0_18px_40px_rgba(6,26,52,0.05)]"
+                className="interactive-card rounded-3xl bg-(--section-bg) p-7 shadow-[0_18px_40px_rgba(6,26,52,0.05)]"
               >
-                <Icon size={38} strokeWidth={1.4} className="text-[#c89750]" />
+                <Icon size={38} strokeWidth={1.4} className="interactive-card-icon text-[#c89750]" />
                 <h3 className="mt-6 font-serif text-2xl leading-tight">
                   {benefit.title}
                 </h3>

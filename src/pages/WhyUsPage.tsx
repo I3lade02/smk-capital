@@ -30,9 +30,9 @@ export function WhyUsPage() {
             return (
               <div
                 key={benefit.title}
-                className="rounded-3xl bg-[var(--section-bg)] p-8 shadow-[0_22px_55px_rgba(6,26,52,0.08)]"
+                className="interactive-card rounded-3xl bg-[var(--section-bg)] p-8 shadow-[0_22px_55px_rgba(6,26,52,0.08)]"
               >
-                <Icon size={40} strokeWidth={1.4} className="text-[#c89750]" />
+                <Icon size={40} strokeWidth={1.4} className="interactive-card-icon text-[#c89750]" />
                 <h3 className="mt-7 font-serif text-3xl leading-tight">
                   {benefit.title}
                 </h3>
@@ -54,7 +54,7 @@ export function WhyUsPage() {
             </h2>
           </div>
 
-          <div className="rounded-3xl bg-white p-8 shadow-[0_20px_50px_rgba(6,26,52,0.08)]">
+          <div className="interactive-card rounded-3xl bg-white p-8 shadow-[0_20px_50px_rgba(6,26,52,0.08)]">
             <p className="text-lg leading-8 text-[#061a34]/65">
               Přehled, kontrola a dlouhodobá stabilita. To je důvod, proč neřešíme
               jen okamžitou potřebu, ale celkový systém vašich financí. Hledáme

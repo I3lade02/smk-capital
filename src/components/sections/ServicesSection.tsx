@@ -11,7 +11,7 @@ export function ServicesSection() {
       className="relative bg-(--section-bg) px-5 pb-20 md:px-12 lg:px-16"
     >
       <div className="grid gap-8 xl:grid-cols-[300px_1fr]">
-        <div className="overflow-hidden rounded-[28px] rounded-tr-[90px] bg-white shadow-[0_25px_70px_rgba(6,26,52,0.1)]">
+        <div className="interactive-card overflow-hidden rounded-[28px] rounded-tr-[90px] bg-white shadow-[0_25px_70px_rgba(6,26,52,0.1)]">
           <img
             src={images.car}
             alt="Skoda Superb combi parked outside"
@@ -30,7 +30,7 @@ export function ServicesSection() {
 
             <a
               href="/#/sluzby"
-              className="mt-8 inline-flex items-center gap-3 text-sm font-semibold text-[#c89750]"
+              className="interactive-link mt-8 inline-flex items-center gap-3 text-sm font-semibold text-[#c89750]"
             >
               Zobrazit všechny služby
               <IconArrowRight size={16} />
@@ -45,13 +45,13 @@ export function ServicesSection() {
             return (
               <article
                 key={service.number}
-                className="group rounded-3xl bg-white p-8 shadow-[0_22px_55px_rgba(6,26,52,0.1)] transition duration-300 hover:-translate-y-2 hover:shadow-[0_30px_75px_rgba(6,26,52,0.16)]"
+                className="interactive-card group rounded-3xl bg-white p-8 shadow-[0_22px_55px_rgba(6,26,52,0.1)] transition duration-300 hover:-translate-y-2 hover:shadow-[0_30px_75px_rgba(6,26,52,0.16)]"
               >
                 <p className="font-serif text-2xl text-[#c89750]">
                   {service.number}
                 </p>
 
-                <Icon className="mt-8 text-[#c89750]" size={42} strokeWidth={1.4} />
+                <Icon className="interactive-card-icon mt-8 text-[#c89750]" size={42} strokeWidth={1.4} />
 
                 <h3 className="mt-7 font-serif text-2xl leading-tight">
                   {service.title}
@@ -84,14 +84,14 @@ export function ServicesSection() {
               key={action.title}
               className={
                 action.highlighted
-                  ? "rounded-3xl bg-[#061a34] p-8 text-white shadow-[0_24px_65px_rgba(6,26,52,0.18)]"
-                  : "rounded-3xl bg-white p-8 shadow-[0_22px_55px_rgba(6,26,52,0.09)]"
+                  ? "interactive-card rounded-3xl bg-[#061a34] p-8 text-white shadow-[0_24px_65px_rgba(6,26,52,0.18)]"
+                  : "interactive-card rounded-3xl bg-white p-8 shadow-[0_22px_55px_rgba(6,26,52,0.09)]"
               }
             >
               <Icon
                 size={40}
                 strokeWidth={1.4}
-                className={action.highlighted ? "text-[#f1c47d]" : "text-[#c89750]"}
+                className={action.highlighted ? "interactive-card-icon text-[#f1c47d]" : "interactive-card-icon text-[#c89750]"}
               />
               <h3
                 className={

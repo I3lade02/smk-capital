@@ -31,13 +31,13 @@ export function ServicesPage() {
             return (
               <article
                 key={service.title}
-                className="group rounded-3xl bg-white p-8 shadow-[0_22px_55px_rgba(6,26,52,0.09)] transition hover:-translate-y-1 hover:shadow-[0_30px_75px_rgba(6,26,52,0.15)]"
+                className="interactive-card group rounded-3xl bg-white p-8 shadow-[0_22px_55px_rgba(6,26,52,0.09)] transition hover:-translate-y-1 hover:shadow-[0_30px_75px_rgba(6,26,52,0.15)]"
               >
                 <div className="flex items-start justify-between gap-6">
                   <p className="font-serif text-3xl text-[#c89750]">
                     {service.number}
                   </p>
-                  <Icon size={42} strokeWidth={1.4} className="text-[#c89750]" />
+                  <Icon size={42} strokeWidth={1.4} className="interactive-card-icon text-[#c89750]" />
                 </div>
 
                 <h3 className="mt-8 font-serif text-3xl">{service.title}</h3>
@@ -73,7 +73,7 @@ export function ServicesPage() {
             {processSteps.map((step) => (
               <div
                 key={step.number}
-                className="rounded-3xl border border-[#061a34]/10 p-7"
+                className="interactive-card rounded-3xl border border-[#061a34]/10 p-7"
               >
                 <p className="font-serif text-4xl text-[#c89750]">{step.number}</p>
                 <h3 className="mt-6 font-serif text-2xl">{step.title}</h3>

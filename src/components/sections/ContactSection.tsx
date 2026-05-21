@@ -1,37 +1,85 @@
-import type { FormEvent } from "react";
+import type { ReactNode } from "react";
+import { useState } from "react";
 import { IconArrowRight, IconMail, IconMapPin, IconPhone } from "@tabler/icons-react";
 import { siteConfig } from "../../constants/site";
 
+const contactFormEndpoint =
+  import.meta.env.VITE_CONTACT_FORM_ENDPOINT ?? "contact.php";
+
+type SubmitStatus =
+  | { type: "idle"; message: "" }
+  | { type: "success" | "error"; message: string };
+
+type ContactFormSubmitEvent = {
+  preventDefault: () => void;
+  currentTarget: HTMLFormElement;
+};
+
 export function ContactSection() {
   const hasAddress = siteConfig.address.length > 0;
+  const [status, setStatus] = useState<SubmitStatus>({ type: "idle", message: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: ContactFormSubmitEvent) {
     event.preventDefault();
 
-    const form = new FormData(event.currentTarget);
+    const currentForm = event.currentTarget;
+    const form = new FormData(currentForm);
     const name = form.get("name")?.toString().trim();
     const phone = form.get("phone")?.toString().trim();
     const email = form.get("email")?.toString().trim();
     const service = form.get("service")?.toString().trim();
     const message = form.get("message")?.toString().trim();
+    const website = form.get("website")?.toString().trim();
 
-    const body = [
-      "Dobrý den,",
-      "",
-      "posílám požadavek na kontakt ze stránek SMK Capital.",
-      "",
-      name ? `Jméno: ${name}` : null,
-      phone ? `Telefon: ${phone}` : null,
-      email ? `E-mail: ${email}` : null,
-      service ? `Služba: ${service}` : null,
-      message ? `Poznámka: ${message}` : null,
-    ]
-      .filter(Boolean)
-      .join("\n");
+    setIsSubmitting(true);
+    setStatus({ type: "idle", message: "" });
 
-    window.location.href = `mailto:${siteConfig.email}?subject=${encodeURIComponent(
-      "SMK Capital - požadavek na zavolání",
-    )}&body=${encodeURIComponent(body)}`;
+    try {
+      const response = await fetch(contactFormEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          website,
+          message: [
+            service ? `Služba: ${service}` : null,
+            message ? `Poznámka: ${message}` : null,
+          ]
+            .filter(Boolean)
+            .join("\n\n"),
+        }),
+      });
+
+      const data = (await response.json().catch(() => null)) as {
+        success?: boolean;
+        message?: string;
+      } | null;
+
+      if (!response.ok || data?.success === false) {
+        throw new Error(data?.message ?? "Zprávu se nepodařilo odeslat.");
+      }
+
+      setStatus({
+        type: "success",
+        message: data?.message ?? "Zpráva byla úspěšně odeslána.",
+      });
+      currentForm.reset();
+    } catch (error) {
+      setStatus({
+        type: "error",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Zprávu se nepodařilo odeslat.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -60,16 +108,19 @@ export function ContactSection() {
             <input
               name="name"
               className="input"
-              placeholder="Jméno a příjmení (volitelné)"
+              placeholder="Jméno a příjmení"
+              required
             />
             <input
               name="phone"
+              type="tel"
               className="input"
               placeholder="Telefon"
               required
             />
             <input
               name="email"
+              type="email"
               className="input"
               placeholder="E-mail"
               required
@@ -88,22 +139,46 @@ export function ContactSection() {
             name="message"
             className="input min-h-36 resize-none"
             placeholder="Stručně napište, co potřebujete řešit"
+            required
+          />
+
+          <input
+            type="text"
+            name="website"
+            className="hidden"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
           />
 
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <p className="max-w-md text-sm leading-6 text-[#061a34]/55">
-              Po kliknutí se otevře váš e-mail s předvyplněným požadavkem. Přímý
-              kontakt najdete i vedle.
+              Po odeslání dorazí požadavek přímo na {siteConfig.email}. Přímý
+              kontakt najdete vedle formuláře.
             </p>
 
             <button
               type="submit"
-              className="inline-flex items-center justify-center gap-3 rounded-full bg-[#061a34] px-7 py-4 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(6,26,52,0.18)] transition hover:bg-[#0b274b]"
+              disabled={isSubmitting}
+              className="inline-flex items-center justify-center gap-3 rounded-full bg-[#061a34] px-7 py-4 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(6,26,52,0.18)] transition hover:bg-[#0b274b] disabled:cursor-not-allowed disabled:opacity-70"
             >
-              Odeslat požadavek
+              {isSubmitting ? "Odesílám..." : "Odeslat požadavek"}
               <IconArrowRight size={17} stroke={1.8} />
             </button>
           </div>
+
+          {status.type !== "idle" ? (
+            <p
+              aria-live="polite"
+              className={
+                status.type === "success"
+                  ? "rounded-2xl bg-green-50 px-4 py-3 text-sm font-medium text-green-800"
+                  : "rounded-2xl bg-red-50 px-4 py-3 text-sm font-medium text-red-800"
+              }
+            >
+              {status.message}
+            </p>
+          ) : null}
         </form>
 
         <div className="border-l border-[#061a34]/10 p-9">
@@ -147,7 +222,7 @@ export function ContactSection() {
 }
 
 type ContactLineProps = {
-  icon: React.ReactNode;
+  icon: ReactNode;
   text: string;
   href?: string;
 };

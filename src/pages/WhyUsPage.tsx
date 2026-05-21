@@ -11,7 +11,8 @@ export function WhyUsPage() {
         kicker="Proč my"
         title="Řešíme finance tak, aby dávaly smysl dlouhodobě."
         description="Neskládáme vedle sebe jednotlivé smlouvy. Stavíme přehledný systém, který odpovídá vaší situaci a šetří vám čas."
-        image={images.hero}
+        image={images.whyUsHero}
+        imageAlt="Financial planning notes and laptops on an office desk"
       />
 
       <section className="bg-white px-5 py-20 md:px-12 lg:px-16">

@@ -54,8 +54,8 @@ export function HeroSection() {
         <div className="relative">
           <div className="overflow-hidden rounded-[28px] rounded-tl-[110px] bg-white shadow-[0_30px_80px_rgba(6,26,52,0.12)]">
             <img
-              src={images.hero}
-              alt="Rodina v moderním domě"
+              src={images.homeHero}
+              alt="Professional financial consultation in a modern office"
               className="h-110 w-full object-cover md:h-140"
             />
           </div>

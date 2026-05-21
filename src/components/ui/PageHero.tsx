@@ -7,6 +7,7 @@ type PageHeroProps = {
     title: string;
     description: string;
     image?: string;
+    imageAlt?: string;
     children?: ReactNode;
 };
 
@@ -15,6 +16,7 @@ export function PageHero({
   title,
   description,
   image,
+  imageAlt = "",
   children,
 }: PageHeroProps) {
   return (
@@ -43,7 +45,7 @@ export function PageHero({
 
         {image ? (
           <div className="overflow-hidden rounded-[28px] rounded-tl-[110px] shadow-[0_30px_80px_rgba(6, 26, 52, 0.12)]">
-            <img src={image} alt="" className="h-115 w-full object-cover" />
+            <img src={image} alt={imageAlt} className="h-115 w-full object-cover" />
           </div>
         ) : (
           <div className="min-h-80 rounded-[28px] rounded-tl-[110px] bg-[#061a34]" />

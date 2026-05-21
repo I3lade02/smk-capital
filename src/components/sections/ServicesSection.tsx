@@ -14,8 +14,8 @@ export function ServicesSection() {
         <div className="overflow-hidden rounded-[28px] rounded-tr-[90px] bg-white shadow-[0_25px_70px_rgba(6,26,52,0.1)]">
           <img
             src={images.car}
-            alt="Luxusní automobil před domem"
-            className="h-72 w-full object-cover"
+            alt="Skoda Superb combi parked outside"
+            className="h-72 w-full object-cover object-[center_70%]"
           />
 
           <div className="p-8">

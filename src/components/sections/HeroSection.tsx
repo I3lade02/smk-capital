@@ -7,7 +7,7 @@ export function HeroSection() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden bg-[var(--section-bg)] px-5 pb-20 pt-32 md:px-12 lg:px-16 lg:pb-28 lg:pt-28"
+      className="relative overflow-hidden bg-(--section-bg) px-5 pb-20 pt-32 md:px-12 lg:px-16 lg:pb-28 lg:pt-28"
     >
       <div className="grid items-center gap-12 lg:grid-cols-[0.88fr_1.12fr]">
         <div className="relative z-10 max-w-2xl">
@@ -31,9 +31,11 @@ export function HeroSection() {
           </p>
 
           <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-            <Button href="#contact">Požadavek na zavolání</Button>
-            <Button href="#services" variant="secondary">
-              Přehled služeb
+            <Button
+              href="#contact"
+              className="px-10 py-5 text-lg font-bold md:px-12 md:py-6 md:text-xl"
+            >
+              Požadavek na zavolání
             </Button>
           </div>
 
@@ -52,8 +54,8 @@ export function HeroSection() {
         <div className="relative">
           <div className="overflow-hidden rounded-[28px] rounded-tl-[110px] bg-white shadow-[0_30px_80px_rgba(6,26,52,0.12)]">
             <img
-              src={images.hero}
-              alt="Rodina v moderním domě"
+              src={images.homeHero}
+              alt="Professional financial consultation in a modern office"
               className="h-110 w-full object-cover md:h-140"
             />
           </div>

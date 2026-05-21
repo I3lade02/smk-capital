@@ -20,7 +20,7 @@ export function AboutSection() {
             {aboutHighlights.map((item) => (
               <span
                 key={item}
-                className="rounded-full border border-[#061a34]/10 bg-[var(--section-bg)] px-4 py-2 text-sm text-[#061a34]/70"
+                className="rounded-full border border-[#061a34]/10 bg-(--section-bg) px-4 py-2 text-sm text-[#061a34]/70"
               >
                 {item}
               </span>
@@ -28,7 +28,7 @@ export function AboutSection() {
           </div>
         </div>
 
-        <div className="rounded-[32px] bg-[#061a34] p-8 text-white shadow-[0_30px_80px_rgba(6,26,52,0.16)] md:p-10">
+        <div className="rounded-4xl bg-[#061a34] p-8 text-white shadow-[0_30px_80px_rgba(6,26,52,0.16)] md:p-10">
           <div className="space-y-5 text-base leading-8 text-white/78">
             {aboutParagraphs.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>

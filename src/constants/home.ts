@@ -23,13 +23,13 @@ export const aboutParagraphs = [
 export const processSteps: ProcessStepItem[] = [
   {
     number: "01",
-    title: "Ozvete se nám",
+    title: "Kontaktujte nás",
     description:
       "Kontaktujete nás telefonicky nebo přes web. Ozveme se vám zpět v čase, který vám vyhovuje.",
   },
   {
     number: "02",
-    title: "Projdeme vaši situaci",
+    title: "Zhodnotíme Vaší situaci",
     description:
       "Zjistíme, jak máte nastavené finance a co potřebujete vyřešit. Nabídneme vám nezávaznou konzultaci.",
   },

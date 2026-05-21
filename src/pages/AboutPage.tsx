@@ -11,7 +11,8 @@ export function AboutPage() {
         kicker="O nás"
         title="Jsme finanční dům pro náročné."
         description="Pomáháme klientům mít všechny finance přehledně na jednom místě – bez chaosu, bez zbytečné byrokracie a bez starostí."
-        image={images.advisor}
+        image={images.aboutHero}
+        imageAlt="Professional business team discussing financial planning"
       />
 
       <section className="bg-white px-5 py-20 md:px-12 lg:px-16">

@@ -5,7 +5,7 @@ export function ProcessSection() {
   return (
     <section
       id="process"
-      className="bg-[var(--section-bg)] px-5 py-20 md:px-12 lg:px-16"
+      className="bg-(--section-bg) px-5 py-20 md:px-12 lg:px-16"
     >
       <div className="mb-12 max-w-3xl">
         <SectionKicker>Jak to u nás probíhá</SectionKicker>

@@ -67,7 +67,7 @@ export const quickActions: QuickActionItem[] = [
     highlighted: true,
   },
   {
-    title: "Orientační kalkulace autopojištění",
+    title: "Kalkulace autopojištění",
     description:
       "Online kalkulaci připravujeme. Zatím vám nachystáme orientační nabídku podle vašich údajů.",
     label: "Poptat autopojištění",
@@ -75,7 +75,7 @@ export const quickActions: QuickActionItem[] = [
     icon: IconCar,
   },
   {
-    title: "Orientační kalkulace úvěru nebo hypotéky",
+    title: "Kalkulace úvěru nebo hypotéky",
     description:
       "Projdeme s vámi záměr, příjmy i možnosti financování a připravíme orientační propočet.",
     label: "Poptat propočet",

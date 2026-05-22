@@ -5,7 +5,7 @@ import { Logo } from "../ui/Logo";
 
 export function Sidebar() {
   return (
-    <aside className="hidden bg-[#061a34] text-white lg:flex lg:flex-col lg:items-center lg:justify-between">
+    <aside className="sticky top-0 hidden h-screen shrink-0 self-start bg-[#061a34] text-white lg:flex lg:flex-col lg:items-center lg:justify-between">
       <div className="w-full">
         <NavLink
           to="/"
@@ -48,10 +48,10 @@ export function Sidebar() {
       </div>
 
       <div className="mb-16 flex flex-col items-center">
-        <p className="max-w-16 text-[10px] uppercase leading-5 tracking-[0.35em] text-white/75">
+        <p className="max-w-16 mr-3 text-[10px] uppercase leading-5 tracking-[0.35em] text-white/75">
           {siteConfig.slogan}
         </p>
-        <div className="mt-8 h-px w-12 bg-[#c89750]" />
+        <div className="mt-8 mr-3 h-px w-12 bg-[#c89750]" />
       </div>
     </aside>
   );

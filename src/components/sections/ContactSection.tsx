@@ -128,7 +128,7 @@ export function ContactSection() {
             <input
               name="name"
               className="input"
-              placeholder="Jméno"
+              placeholder="Jméno (nepovinné)"
             />
             <input
               name="phone"

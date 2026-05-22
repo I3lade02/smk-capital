@@ -128,8 +128,7 @@ export function ContactSection() {
             <input
               name="name"
               className="input"
-              placeholder="Jméno a příjmení"
-              required
+              placeholder="Jméno"
             />
             <input
               name="phone"
@@ -152,6 +151,7 @@ export function ContactSection() {
               <option>Hypotéky</option>
               <option>Úvěry a refinancování</option>
               <option>Investice a servis smluv</option>
+              <option>Jiné</option>
             </select>
           </div>
 

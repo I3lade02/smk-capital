@@ -11,8 +11,8 @@ export default function App() {
   useScrollReveal(location.pathname);
 
   return (
-    <main className="min-h-screen bg-[var(--page-bg)] text-[#061a34]">
-      <div className="mx-auto grid min-h-screen max-w-480 lg:grid-cols-[160px_1fr]">
+    <main className="min-h-screen bg-(--page-bg) text-[#061a34]">
+      <div className="mx-auto grid min-h-screen lg:grid-cols-[160px_1fr]">
         <Sidebar />
 
         <div className="relative overflow-hidden">

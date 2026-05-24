@@ -11,7 +11,7 @@ export const benefits: BenefitItem[] = [
   {
     title: "Vše na jednom místě",
     description:
-      "Pojištění, financování, investice i smluvní servis řešíte s jedním partnerem.",
+      "Pojištění, financování, investice i servis smluv řešíte s jedním partnerem.",
     icon: IconShieldCheck,
   },
   {

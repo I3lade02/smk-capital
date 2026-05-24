@@ -1,10 +1,13 @@
 import { IconArrowRight } from "@tabler/icons-react";
 import { images } from "../../constants/site";
 import { quickActions, serviceCategories } from "../../constants/services";
+import { scrollToSectionFromHref } from "../../lib/sectionLinks";
 import { Button } from "../ui/Button";
 import { SectionKicker } from "../ui/SectionKicker";
 
 export function ServicesSection() {
+  const contactHref = "#contact";
+
   return (
     <section
       id="services"
@@ -43,9 +46,11 @@ export function ServicesSection() {
             const Icon = service.icon;
 
             return (
-              <article
+              <a
                 key={service.number}
-                className="interactive-card group rounded-3xl bg-white p-8 shadow-[0_22px_55px_rgba(6,26,52,0.1)] transition duration-300 hover:-translate-y-2 hover:shadow-[0_30px_75px_rgba(6,26,52,0.16)]"
+                href={contactHref}
+                onClick={(event) => scrollToSectionFromHref(event, contactHref)}
+                className="interactive-card group block rounded-3xl bg-white p-8 shadow-[0_22px_55px_rgba(6,26,52,0.1)] transition duration-300 hover:-translate-y-2 hover:shadow-[0_30px_75px_rgba(6,26,52,0.16)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c89750]/45 focus-visible:ring-offset-4 focus-visible:ring-offset-[var(--section-bg)]"
               >
                 <p className="font-serif text-2xl text-[#c89750]">
                   {service.number}
@@ -69,7 +74,7 @@ export function ServicesSection() {
                     </li>
                   ))}
                 </ul>
-              </article>
+              </a>
             );
           })}
         </div>

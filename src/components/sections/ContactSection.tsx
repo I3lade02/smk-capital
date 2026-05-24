@@ -13,6 +13,13 @@ import { siteConfig } from "../../constants/site";
 const contactFormEndpoint =
   import.meta.env.VITE_CONTACT_FORM_ENDPOINT ?? "contact.php";
 const contactFormTimeoutMs = 15000;
+const defaultCallPreference = "immediately";
+const scheduledCallLeadTimeMinutes = 5;
+const scheduledCallIntervalMinutes = 15;
+const scheduledCallStartHour = 8;
+const scheduledCallEndHour = 20;
+
+type CallPreference = "immediately" | "scheduled";
 
 type SubmitStatus =
   | { type: "idle"; message: "" }
@@ -32,6 +39,11 @@ export function ContactSection() {
   const hasAddress = siteConfig.address.length > 0;
   const [status, setStatus] = useState<SubmitStatus>({ type: "idle", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [callPreference, setCallPreference] =
+    useState<CallPreference>(defaultCallPreference);
+  const [scheduledCallDate, setScheduledCallDate] = useState("");
+  const [scheduledCallTime, setScheduledCallTime] = useState("");
+  const availableScheduledTimeOptions = getAvailableScheduledTimeOptions();
 
   async function handleSubmit(event: ContactFormSubmitEvent) {
     event.preventDefault();
@@ -44,6 +56,29 @@ export function ContactSection() {
     const service = form.get("service")?.toString().trim();
     const message = form.get("message")?.toString().trim();
     const website = form.get("website")?.toString().trim();
+    const selectedCallPreference = getCallPreference(
+      form.get("callPreference")?.toString(),
+    );
+    const callbackDate = form.get("callbackDate")?.toString().trim() ?? "";
+    const callbackTime = form.get("callbackTime")?.toString().trim() ?? "";
+    const callbackAt = combineScheduledCallDateTime(callbackDate, callbackTime);
+
+    if (
+      selectedCallPreference === "scheduled" &&
+      !isValidScheduledCallDateTime(callbackAt)
+    ) {
+      setStatus({
+        type: "error",
+        message:
+          "Vyberte prosím platné budoucí datum a čas, kdy vám můžeme zavolat.",
+      });
+      return;
+    }
+
+    const callbackTimingLabel = getCallbackTimingLabel(
+      selectedCallPreference,
+      callbackAt,
+    );
 
     setIsSubmitting(true);
     setStatus({ type: "idle", message: "" });
@@ -65,8 +100,18 @@ export function ContactSection() {
           email,
           phone,
           website,
+          service,
+          callPreference: selectedCallPreference,
+          callbackDate:
+            selectedCallPreference === "scheduled" ? callbackDate : null,
+          callbackTime:
+            selectedCallPreference === "scheduled" ? callbackTime : null,
+          callbackAt:
+            selectedCallPreference === "scheduled" ? callbackAt : null,
+          note: message,
           message: [
             service ? `Služba: ${service}` : null,
+            `Preferovaný čas hovoru: ${callbackTimingLabel}`,
             message ? `Poznámka: ${message}` : null,
           ]
             .filter(Boolean)
@@ -91,6 +136,9 @@ export function ContactSection() {
         message: data?.message ?? "Zpráva byla úspěšně odeslána.",
       });
       currentForm.reset();
+      setCallPreference(defaultCallPreference);
+      setScheduledCallDate("");
+      setScheduledCallTime("");
     } catch (error) {
       setStatus({
         type: "error",
@@ -111,8 +159,8 @@ export function ContactSection() {
         <div className="bg-[#f4efe7] p-9">
           <h2 className="font-serif text-5xl leading-tight">Požadavek na zavolání</h2>
           <p className="mt-6 leading-7 text-[#061a34]/65">
-            Vyplňte telefon a e-mail. Ozveme se vám zpět co nejdříve a probereme,
-            co potřebujete vyřešit.
+            Vyplňte telefon a e-mail. Ozveme se vám zpět co nejdříve, nebo v čase,
+            který si sami zvolíte.
           </p>
 
           <div className="mt-8 space-y-3 text-sm leading-6 text-[#061a34]/65">
@@ -154,6 +202,155 @@ export function ContactSection() {
               <option>Jiné</option>
             </select>
           </div>
+
+          <fieldset className="grid gap-3">
+            <legend className="text-sm font-semibold text-[#061a34]">
+              Kdy vám můžeme zavolat?
+            </legend>
+
+            <div className="grid gap-3 md:grid-cols-2">
+              <label
+                className={
+                  callPreference === "immediately"
+                    ? "rounded-2xl border border-[#c89750] bg-[#f4efe7] p-4 shadow-[0_12px_28px_rgba(200,151,80,0.12)]"
+                    : "rounded-2xl border border-[#061a34]/10 bg-white p-4 transition hover:border-[#c89750]/50"
+                }
+              >
+                <input
+                  type="radio"
+                  name="callPreference"
+                  value="immediately"
+                  checked={callPreference === "immediately"}
+                  onChange={() => setCallPreference("immediately")}
+                  className="sr-only"
+                />
+                <span className="block text-sm font-semibold text-[#061a34]">
+                  Okamžitě
+                </span>
+                <span className="mt-2 block text-sm leading-6 text-[#061a34]/60">
+                  Jakmile budeme mít prostor, ozveme se zpět bez dalšího plánování.
+                </span>
+              </label>
+
+              <label
+                className={
+                  callPreference === "scheduled"
+                    ? "rounded-2xl border border-[#c89750] bg-[#f4efe7] p-4 shadow-[0_12px_28px_rgba(200,151,80,0.12)]"
+                    : "rounded-2xl border border-[#061a34]/10 bg-white p-4 transition hover:border-[#c89750]/50"
+                }
+              >
+                <input
+                  type="radio"
+                  name="callPreference"
+                  value="scheduled"
+                  checked={callPreference === "scheduled"}
+                  onChange={() => {
+                    setCallPreference("scheduled");
+                    if (!scheduledCallDate && !scheduledCallTime) {
+                      const minimumDate = getMinimumScheduledCallDate();
+                      setScheduledCallDate(formatDateValue(minimumDate));
+                      setScheduledCallTime(formatTimeValue(minimumDate));
+                    }
+                  }}
+                  className="sr-only"
+                />
+                <span className="block text-sm font-semibold text-[#061a34]">
+                  Vybrat datum a čas
+                </span>
+                <span className="mt-2 block text-sm leading-6 text-[#061a34]/60">
+                  Zvolíte si přesný termín, kdy vám má náš tým zavolat.
+                </span>
+              </label>
+            </div>
+
+            {callPreference === "scheduled" ? (
+              <div className="grid gap-4 rounded-2xl border border-[#c89750]/25 bg-[#fbf8f3] p-4">
+                <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_220px]">
+                  <div className="grid gap-2">
+                    <label
+                      htmlFor="callbackDate"
+                      className="text-sm font-medium text-[#061a34]"
+                    >
+                      Datum hovoru
+                    </label>
+                    <input
+                      id="callbackDate"
+                      name="callbackDate"
+                      type="date"
+                      lang="cs-CZ"
+                      className="input"
+                      value={scheduledCallDate}
+                      onChange={(event) => {
+                        const nextDate = event.target.value;
+                        setScheduledCallDate(nextDate);
+
+                        if (
+                          scheduledCallTime &&
+                          isScheduledTimeOptionDisabled(
+                            nextDate,
+                            scheduledCallTime,
+                          )
+                        ) {
+                          setScheduledCallTime("");
+                        }
+                      }}
+                      min={getMinimumScheduledDateValue()}
+                      required={callPreference === "scheduled"}
+                    />
+                  </div>
+
+                  <div className="grid gap-2">
+                    <label
+                      htmlFor="callbackTime"
+                      className="text-sm font-medium text-[#061a34]"
+                    >
+                      Čas hovoru
+                    </label>
+                    <select
+                      id="callbackTime"
+                      name="callbackTime"
+                      className="input"
+                      value={scheduledCallTime}
+                      onChange={(event) => setScheduledCallTime(event.target.value)}
+                      required={callPreference === "scheduled"}
+                    >
+                      <option value="">Vyberte čas</option>
+                      {availableScheduledTimeOptions.map((timeOption) => (
+                        <option
+                          key={timeOption}
+                          value={timeOption}
+                          disabled={isScheduledTimeOptionDisabled(
+                            scheduledCallDate,
+                            timeOption,
+                          )}
+                        >
+                          {timeOption}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {scheduledCallDate && scheduledCallTime ? (
+                  <p className="text-sm leading-6 text-[#061a34]/70">
+                    Vybraný termín:{" "}
+                    <span className="font-medium text-[#061a34]">
+                      {getFormattedScheduledCallSummary(
+                        scheduledCallDate,
+                        scheduledCallTime,
+                      )}
+                    </span>
+                  </p>
+                ) : null}
+
+                <p className="text-xs leading-5 text-[#061a34]/55">
+                  Datum se zobrazuje v českém formátu a čas vybíráte ve
+                  24hodinovém režimu. Nabízíme pouze pracovní hodiny 08:00 až
+                  20:00. Tento údaj se odešle i do interního e-mailu.
+                </p>
+              </div>
+            ) : null}
+          </fieldset>
 
           <textarea
             name="message"
@@ -399,6 +596,227 @@ function getUsefulServerMessage(serverMessage?: string) {
   }
 
   return trimmedMessage;
+}
+
+function getCallPreference(value?: string): CallPreference {
+  return value === "scheduled" ? "scheduled" : "immediately";
+}
+
+function getMinimumScheduledCallAtValue() {
+  return combineScheduledCallDateTime(
+    getMinimumScheduledDateValue(),
+    formatTimeValue(getMinimumScheduledCallDate()),
+  );
+}
+
+function isValidScheduledCallDateTime(value: string) {
+  const parsedDate = parseLocalDateTime(value);
+
+  if (!parsedDate) {
+    return false;
+  }
+
+  const minimumDate = parseLocalDateTime(getMinimumScheduledCallAtValue());
+
+  return (
+    minimumDate !== null &&
+    parsedDate >= minimumDate &&
+    isWithinScheduledCallHours(parsedDate)
+  );
+}
+
+function getMinimumScheduledCallDate() {
+  const minimumDate = new Date();
+  minimumDate.setMinutes(
+    minimumDate.getMinutes() + scheduledCallLeadTimeMinutes,
+    0,
+    0,
+  );
+
+  const workingDayStart = getScheduledCallDayBoundary(
+    minimumDate,
+    scheduledCallStartHour,
+  );
+  const workingDayEnd = getScheduledCallDayBoundary(
+    minimumDate,
+    scheduledCallEndHour,
+  );
+
+  if (minimumDate < workingDayStart) {
+    return workingDayStart;
+  }
+
+  if (minimumDate > workingDayEnd) {
+    return getNextScheduledCallDayStart(minimumDate);
+  }
+
+  const remainder = minimumDate.getMinutes() % scheduledCallIntervalMinutes;
+  if (remainder !== 0) {
+    minimumDate.setMinutes(
+      minimumDate.getMinutes() + (scheduledCallIntervalMinutes - remainder),
+    );
+  }
+
+  if (minimumDate > workingDayEnd) {
+    return getNextScheduledCallDayStart(minimumDate);
+  }
+
+  return minimumDate;
+}
+
+function getMinimumScheduledDateValue() {
+  return formatDateValue(getMinimumScheduledCallDate());
+}
+
+function formatDateValue(date: Date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+function formatTimeValue(date: Date) {
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+
+  return `${hours}:${minutes}`;
+}
+
+function getAvailableScheduledTimeOptions() {
+  const times: string[] = [];
+  const startMinutes = scheduledCallStartHour * 60;
+  const endMinutes = scheduledCallEndHour * 60;
+
+  for (
+    let totalMinutes = startMinutes;
+    totalMinutes <= endMinutes;
+    totalMinutes += scheduledCallIntervalMinutes
+  ) {
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    const timeValue = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+    times.push(timeValue);
+  }
+
+  return times;
+}
+
+function combineScheduledCallDateTime(date: string, time: string) {
+  if (!date || !time) {
+    return "";
+  }
+
+  return `${date}T${time}`;
+}
+
+function getFormattedScheduledCallSummary(date: string, time: string) {
+  return getCallbackTimingLabel(
+    "scheduled",
+    combineScheduledCallDateTime(date, time),
+  );
+}
+
+function getScheduledCallDayBoundary(date: Date, hour: number) {
+  return new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    hour,
+    0,
+    0,
+    0,
+  );
+}
+
+function getNextScheduledCallDayStart(date: Date) {
+  return new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate() + 1,
+    scheduledCallStartHour,
+    0,
+    0,
+    0,
+  );
+}
+
+function isWithinScheduledCallHours(date: Date) {
+  const totalMinutes = date.getHours() * 60 + date.getMinutes();
+  const startMinutes = scheduledCallStartHour * 60;
+  const endMinutes = scheduledCallEndHour * 60;
+
+  return totalMinutes >= startMinutes && totalMinutes <= endMinutes;
+}
+
+function isScheduledTimeOptionDisabled(selectedDate: string, timeValue: string) {
+  if (!selectedDate) {
+    return false;
+  }
+
+  const minimumDate = getMinimumScheduledCallDate();
+  const minimumDateValue = formatDateValue(minimumDate);
+  const minimumTimeValue = formatTimeValue(minimumDate);
+
+  return selectedDate === minimumDateValue && timeValue < minimumTimeValue;
+}
+
+function getCallbackTimingLabel(
+  callPreference: CallPreference,
+  scheduledValue: string,
+) {
+  if (callPreference === "immediately") {
+    return "Okamžitě";
+  }
+
+  const parsedDate = parseLocalDateTime(scheduledValue);
+
+  if (!parsedDate) {
+    return scheduledValue;
+  }
+
+  return new Intl.DateTimeFormat("cs-CZ", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(parsedDate);
+}
+
+function parseLocalDateTime(value: string) {
+  const match = value.match(
+    /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/,
+  );
+
+  if (!match) {
+    return null;
+  }
+
+  const [, year, month, day, hour, minute] = match;
+  const parsedDate = new Date(
+    Number(year),
+    Number(month) - 1,
+    Number(day),
+    Number(hour),
+    Number(minute),
+  );
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return null;
+  }
+
+  if (
+    parsedDate.getFullYear() !== Number(year) ||
+    parsedDate.getMonth() !== Number(month) - 1 ||
+    parsedDate.getDate() !== Number(day) ||
+    parsedDate.getHours() !== Number(hour) ||
+    parsedDate.getMinutes() !== Number(minute)
+  ) {
+    return null;
+  }
+
+  return parsedDate;
 }
 
 function ContactLine({ icon, text, href }: ContactLineProps) {

@@ -13,8 +13,8 @@ export function ProcessSection() {
           Jednoduše, přehledně a bez starostí.
         </h2>
         <p className="mt-6 text-lg leading-8 text-[#061a34]/65">
-          Od prvního kontaktu až po dlouhodobou správu smluv vedeme spolupráci
-          tak, aby pro vás byla co nejjednodušší.
+          Od prvního kontaktu až po dlouhodobou správu smluv vedeme spolupráci tak,
+          aby pro Vás byla co nejjednodušší a bez zbytečných starostí.
         </p>
       </div>
 

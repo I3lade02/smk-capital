@@ -199,6 +199,7 @@ export function ContactSection() {
               <option>Hypotéky</option>
               <option>Úvěry a refinancování</option>
               <option>Investice a servis smluv</option>
+              <option>Energie</option>
               <option>Jiné</option>
             </select>
           </div>

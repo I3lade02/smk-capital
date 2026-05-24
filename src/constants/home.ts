@@ -25,31 +25,31 @@ export const processSteps: ProcessStepItem[] = [
     number: "01",
     title: "Kontaktujte nás",
     description:
-      "Kontaktujete nás telefonicky nebo přes web. Ozveme se vám zpět v čase, který vám vyhovuje.",
+      "Ozvěte se nám telefonicky nebo přes web. Následně se Vám ozveme zpět v čase, který Vám vyhovuje.",
   },
   {
     number: "02",
     title: "Zhodnotíme Vaší situaci",
     description:
-      "Zjistíme, jak máte nastavené finance a co potřebujete vyřešit. Nabídneme vám nezávaznou konzultaci.",
+      "Zjistíme, jak máte nastavené finance, jaké máte potřeby, co aktuálně řešíte a kde Vám můžeme nejvíce pomoci.",
   },
   {
     number: "03",
     title: "Navrhneme řešení",
     description:
-      "Pokud vám dává smysl spolupráce, připravíme vám pojištění, financování i celkový přehled vašich smluv.",
+      "Vytvoříme systém na míru podle vašich preferencí, který bude fungovat dlouhodobě, přehledně a efektivně.",
   },
   {
     number: "04",
     title: "Vše vyřešíme za vás",
     description:
-      "Postaráme se o sjednání, úpravy i případné výpovědi. Nemusíte nic obcházet ani řešit sami.",
+      "Postaráme se o sjednání, úpravy i výpovědi. Vy nemusíte nic obcházet ani složitě řešit. Administrativa je naše starost.",
   },
   {
     number: "05",
     title: "Dlouhodobě se staráme",
     description:
-      "Vaše smlouvy spravujeme dlouhodobě – máte je přehledně na jednom místě, pod kontrolou a bez starostí.",
+      "Vaše smlouvy spravujeme dlouhodobě, přehledně a na jednom místě, tak, abyste měli klid a jistotu i do budoucna.",
   },
 ];
 

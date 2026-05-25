@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
+import { z } from "zod";
 import {
   IconArrowRight,
   IconCheck,
@@ -35,48 +36,174 @@ type ContactFormResponse = {
   message?: string;
 };
 
+const contactFormSchema = z
+  .object({
+    name: z
+      .string()
+      .trim()
+      .max(80, "Jméno může mít maximálně 80 znaků."),
+
+    phone: z
+      .string()
+      .trim()
+      .min(1, "Telefon je povinný.")
+      .regex(
+        /^(\+420\s?)?(\d[\s.-]?){9}$/,
+        "Zadejte prosím platné české telefonní číslo.",
+      ),
+
+    email: z
+      .string()
+      .trim()
+      .min(1, "E-mail je povinný.")
+      .email("Zadejte prosím platný e-mail."),
+
+    service: z.string().trim().min(1, "Vyberte prosím službu."),
+
+    message: z
+      .string()
+      .trim()
+      .min(10, "Zpráva musí mít alespoň 10 znaků.")
+      .max(1500, "Zpráva může mít maximálně 1500 znaků."),
+
+    website: z.string().trim(),
+
+    callPreference: z.enum(["immediately", "scheduled"]),
+
+    callbackDate: z.string().trim(),
+    callbackTime: z.string().trim(),
+  })
+  .superRefine((values, ctx) => {
+    if (values.website) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["website"],
+        message: "Formulář se nepodařilo ověřit.",
+      });
+    }
+
+    if (values.callPreference !== "scheduled") {
+      return;
+    }
+
+    if (!values.callbackDate) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["callbackDate"],
+        message: "Vyberte prosím datum hovoru.",
+      });
+    }
+
+    if (!values.callbackTime) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["callbackTime"],
+        message: "Vyberte prosím čas hovoru.",
+      });
+    }
+
+    const callbackAt = combineScheduledCallDateTime(
+      values.callbackDate,
+      values.callbackTime,
+    );
+
+    if (callbackAt && !isValidScheduledCallDateTime(callbackAt)) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["callbackTime"],
+        message:
+          "Vyberte prosím platný budoucí termín v rozmezí 08:00 až 20:00.",
+      });
+    }
+  });
+
+type ContactFormValues = z.infer<typeof contactFormSchema>;
+
+type ContactFormErrors = Partial<Record<keyof ContactFormValues, string>>;
+
 export function ContactSection() {
   const hasAddress = siteConfig.address.length > 0;
-  const [status, setStatus] = useState<SubmitStatus>({ type: "idle", message: "" });
+  const [status, setStatus] = useState<SubmitStatus>({
+    type: "idle",
+    message: "",
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formErrors, setFormErrors] = useState<ContactFormErrors>({});
   const [callPreference, setCallPreference] =
     useState<CallPreference>(defaultCallPreference);
   const [scheduledCallDate, setScheduledCallDate] = useState("");
   const [scheduledCallTime, setScheduledCallTime] = useState("");
   const availableScheduledTimeOptions = getAvailableScheduledTimeOptions();
 
+  function clearFieldError(field: keyof ContactFormValues) {
+    if (!formErrors[field]) {
+      return;
+    }
+
+    setFormErrors((currentErrors) => {
+      const nextErrors = { ...currentErrors };
+      delete nextErrors[field];
+      return nextErrors;
+    });
+  }
+
+  function getInputClassName(field: keyof ContactFormValues) {
+    return formErrors[field]
+      ? "input border-red-300 focus:border-red-400 focus:shadow-[0_0_0_3px_rgba(248,113,113,0.16)]"
+      : "input";
+  }
+
   async function handleSubmit(event: ContactFormSubmitEvent) {
     event.preventDefault();
 
     const currentForm = event.currentTarget;
     const form = new FormData(currentForm);
-    const name = form.get("name")?.toString().trim();
-    const phone = form.get("phone")?.toString().trim();
-    const email = form.get("email")?.toString().trim();
-    const service = form.get("service")?.toString().trim();
-    const message = form.get("message")?.toString().trim();
-    const website = form.get("website")?.toString().trim();
+
     const selectedCallPreference = getCallPreference(
       form.get("callPreference")?.toString(),
     );
-    const callbackDate = form.get("callbackDate")?.toString().trim() ?? "";
-    const callbackTime = form.get("callbackTime")?.toString().trim() ?? "";
-    const callbackAt = combineScheduledCallDateTime(callbackDate, callbackTime);
 
-    if (
-      selectedCallPreference === "scheduled" &&
-      !isValidScheduledCallDateTime(callbackAt)
-    ) {
+    const formValues: ContactFormValues = {
+      name: form.get("name")?.toString() ?? "",
+      phone: form.get("phone")?.toString() ?? "",
+      email: form.get("email")?.toString() ?? "",
+      service: form.get("service")?.toString() ?? "",
+      message: form.get("message")?.toString() ?? "",
+      website: form.get("website")?.toString() ?? "",
+      callPreference: selectedCallPreference,
+      callbackDate: form.get("callbackDate")?.toString() ?? "",
+      callbackTime: form.get("callbackTime")?.toString() ?? "",
+    };
+
+    const validationResult = contactFormSchema.safeParse(formValues);
+
+    if (!validationResult.success) {
+      setFormErrors(getContactFormErrors(validationResult.error));
       setStatus({
         type: "error",
-        message:
-          "Vyberte prosím platné budoucí datum a čas, kdy vám můžeme zavolat.",
+        message: "Zkontrolujte prosím zvýrazněná pole ve formuláři.",
       });
       return;
     }
 
+    setFormErrors({});
+
+    const {
+      name,
+      phone,
+      email,
+      service,
+      message,
+      website,
+      callPreference: validatedCallPreference,
+      callbackDate,
+      callbackTime,
+    } = validationResult.data;
+
+    const callbackAt = combineScheduledCallDateTime(callbackDate, callbackTime);
+
     const callbackTimingLabel = getCallbackTimingLabel(
-      selectedCallPreference,
+      validatedCallPreference,
       callbackAt,
     );
 
@@ -101,13 +228,13 @@ export function ContactSection() {
           phone,
           website,
           service,
-          callPreference: selectedCallPreference,
+          callPreference: validatedCallPreference,
           callbackDate:
-            selectedCallPreference === "scheduled" ? callbackDate : null,
+            validatedCallPreference === "scheduled" ? callbackDate : null,
           callbackTime:
-            selectedCallPreference === "scheduled" ? callbackTime : null,
+            validatedCallPreference === "scheduled" ? callbackTime : null,
           callbackAt:
-            selectedCallPreference === "scheduled" ? callbackAt : null,
+            validatedCallPreference === "scheduled" ? callbackAt : null,
           note: message,
           message: [
             service ? `Služba: ${service}` : null,
@@ -157,10 +284,12 @@ export function ContactSection() {
     >
       <div className="grid overflow-hidden rounded-3xl bg-white shadow-[0_25px_80px_rgba(6,26,52,0.1)] lg:grid-cols-[0.75fr_1.35fr_0.8fr]">
         <div className="bg-[#f4efe7] p-9">
-          <h2 className="font-serif text-5xl leading-tight">Požadavek na zavolání</h2>
+          <h2 className="font-serif text-5xl leading-tight">
+            Požadavek na zavolání
+          </h2>
           <p className="mt-6 leading-7 text-[#061a34]/65">
-            Vyplňte telefon a e-mail. Ozveme se vám zpět co nejdříve, nebo v čase,
-            který si sami zvolíte.
+            Vyplňte telefon a e-mail. Ozveme se vám zpět co nejdříve, nebo v
+            čase, který si sami zvolíte.
           </p>
 
           <div className="mt-8 space-y-3 text-sm leading-6 text-[#061a34]/65">
@@ -171,37 +300,75 @@ export function ContactSection() {
           <div className="mt-8 h-px w-14 bg-[#c89750]" />
         </div>
 
-        <form className="grid gap-4 p-9" onSubmit={handleSubmit}>
+        <form className="grid gap-4 p-9" onSubmit={handleSubmit} noValidate>
           <div className="grid gap-4 md:grid-cols-2">
-            <input
-              name="name"
-              className="input"
-              placeholder="Jméno (nepovinné)"
-            />
-            <input
-              name="phone"
-              type="tel"
-              className="input"
-              placeholder="Telefon"
-              required
-            />
-            <input
-              name="email"
-              type="email"
-              className="input"
-              placeholder="E-mail"
-              required
-            />
-            <select name="service" className="input" defaultValue="">
-              <option value="">Vyberte službu</option>
-              <option>Pojištění</option>
-              <option>Autopojištění</option>
-              <option>Hypotéky</option>
-              <option>Úvěry a refinancování</option>
-              <option>Investice a servis smluv</option>
-              <option>Energie</option>
-              <option>Jiné</option>
-            </select>
+            <div className="grid gap-2">
+              <input
+                name="name"
+                className={getInputClassName("name")}
+                placeholder="Jméno (nepovinné)"
+                onInput={() => clearFieldError("name")}
+              />
+              {formErrors.name ? (
+                <p className="text-xs font-medium text-red-700">
+                  {formErrors.name}
+                </p>
+              ) : null}
+            </div>
+
+            <div className="grid gap-2">
+              <input
+                name="phone"
+                type="tel"
+                className={getInputClassName("phone")}
+                placeholder="Telefon"
+                onInput={() => clearFieldError("phone")}
+              />
+              {formErrors.phone ? (
+                <p className="text-xs font-medium text-red-700">
+                  {formErrors.phone}
+                </p>
+              ) : null}
+            </div>
+
+            <div className="grid gap-2">
+              <input
+                name="email"
+                type="email"
+                className={getInputClassName("email")}
+                placeholder="E-mail"
+                onInput={() => clearFieldError("email")}
+              />
+              {formErrors.email ? (
+                <p className="text-xs font-medium text-red-700">
+                  {formErrors.email}
+                </p>
+              ) : null}
+            </div>
+
+            <div className="grid gap-2">
+              <select
+                name="service"
+                className={getInputClassName("service")}
+                defaultValue=""
+                onChange={() => clearFieldError("service")}
+              >
+                <option value="">Vyberte službu</option>
+                <option>Pojištění</option>
+                <option>Autopojištění</option>
+                <option>Hypotéky</option>
+                <option>Úvěry a refinancování</option>
+                <option>Investice a servis smluv</option>
+                <option>Energie</option>
+                <option>Jiné</option>
+              </select>
+
+              {formErrors.service ? (
+                <p className="text-xs font-medium text-red-700">
+                  {formErrors.service}
+                </p>
+              ) : null}
+            </div>
           </div>
 
           <fieldset className="grid gap-3">
@@ -222,14 +389,19 @@ export function ContactSection() {
                   name="callPreference"
                   value="immediately"
                   checked={callPreference === "immediately"}
-                  onChange={() => setCallPreference("immediately")}
+                  onChange={() => {
+                    setCallPreference("immediately");
+                    clearFieldError("callbackDate");
+                    clearFieldError("callbackTime");
+                  }}
                   className="sr-only"
                 />
                 <span className="block text-sm font-semibold text-[#061a34]">
                   Okamžitě
                 </span>
                 <span className="mt-2 block text-sm leading-6 text-[#061a34]/60">
-                  Jakmile budeme mít prostor, ozveme se zpět bez dalšího plánování.
+                  Jakmile budeme mít prostor, ozveme se zpět bez dalšího
+                  plánování.
                 </span>
               </label>
 
@@ -247,6 +419,9 @@ export function ContactSection() {
                   checked={callPreference === "scheduled"}
                   onChange={() => {
                     setCallPreference("scheduled");
+                    clearFieldError("callbackDate");
+                    clearFieldError("callbackTime");
+
                     if (!scheduledCallDate && !scheduledCallTime) {
                       const minimumDate = getMinimumScheduledCallDate();
                       setScheduledCallDate(formatDateValue(minimumDate));
@@ -279,11 +454,12 @@ export function ContactSection() {
                       name="callbackDate"
                       type="date"
                       lang="cs-CZ"
-                      className="input"
+                      className={getInputClassName("callbackDate")}
                       value={scheduledCallDate}
                       onChange={(event) => {
                         const nextDate = event.target.value;
                         setScheduledCallDate(nextDate);
+                        clearFieldError("callbackDate");
 
                         if (
                           scheduledCallTime &&
@@ -296,8 +472,13 @@ export function ContactSection() {
                         }
                       }}
                       min={getMinimumScheduledDateValue()}
-                      required={callPreference === "scheduled"}
                     />
+
+                    {formErrors.callbackDate ? (
+                      <p className="text-xs font-medium text-red-700">
+                        {formErrors.callbackDate}
+                      </p>
+                    ) : null}
                   </div>
 
                   <div className="grid gap-2">
@@ -310,10 +491,12 @@ export function ContactSection() {
                     <select
                       id="callbackTime"
                       name="callbackTime"
-                      className="input"
+                      className={getInputClassName("callbackTime")}
                       value={scheduledCallTime}
-                      onChange={(event) => setScheduledCallTime(event.target.value)}
-                      required={callPreference === "scheduled"}
+                      onChange={(event) => {
+                        setScheduledCallTime(event.target.value);
+                        clearFieldError("callbackTime");
+                      }}
                     >
                       <option value="">Vyberte čas</option>
                       {availableScheduledTimeOptions.map((timeOption) => (
@@ -329,6 +512,12 @@ export function ContactSection() {
                         </option>
                       ))}
                     </select>
+
+                    {formErrors.callbackTime ? (
+                      <p className="text-xs font-medium text-red-700">
+                        {formErrors.callbackTime}
+                      </p>
+                    ) : null}
                   </div>
                 </div>
 
@@ -353,12 +542,20 @@ export function ContactSection() {
             ) : null}
           </fieldset>
 
-          <textarea
-            name="message"
-            className="input min-h-36 resize-none"
-            placeholder="Stručně napište, co potřebujete řešit"
-            required
-          />
+          <div className="grid gap-2">
+            <textarea
+              name="message"
+              className={`${getInputClassName("message")} min-h-36 resize-none`}
+              placeholder="Stručně napište, co potřebujete řešit"
+              onInput={() => clearFieldError("message")}
+            />
+
+            {formErrors.message ? (
+              <p className="text-xs font-medium text-red-700">
+                {formErrors.message}
+              </p>
+            ) : null}
+          </div>
 
           <input
             type="text"
@@ -397,7 +594,11 @@ export function ContactSection() {
               </span>
               <span className="relative z-10 flex size-5 items-center justify-center">
                 {isSubmitting ? (
-                  <IconLoader2 className="contact-submit-spinner" size={18} stroke={1.9} />
+                  <IconLoader2
+                    className="contact-submit-spinner"
+                    size={18}
+                    stroke={1.9}
+                  />
                 ) : status.type === "success" ? (
                   <IconCheck size={18} stroke={2.1} />
                 ) : (
@@ -468,8 +669,8 @@ export function ContactSection() {
               Autopojištění i úvěr řešíme s vámi osobně.
             </h4>
             <p className="mt-3 text-sm leading-7 text-white/68">
-              Online kalkulačky můžeme doplnit v další fázi. Zatím vám připravíme
-              orientační nabídku podle vaší situace.
+              Online kalkulačky můžeme doplnit v další fázi. Zatím vám
+              připravíme orientační nabídku podle vaší situace.
             </p>
           </div>
         </div>
@@ -505,6 +706,24 @@ async function readContactFormResponse(response: Response) {
       hasInvalidJson: response.ok,
     };
   }
+}
+
+function getContactFormErrors(error: z.ZodError<ContactFormValues>) {
+  return error.issues.reduce<ContactFormErrors>((errors, issue) => {
+    const fieldName = issue.path[0];
+
+    if (typeof fieldName !== "string") {
+      return errors;
+    }
+
+    const typedFieldName = fieldName as keyof ContactFormValues;
+
+    if (!errors[typedFieldName]) {
+      errors[typedFieldName] = issue.message;
+    }
+
+    return errors;
+  }, {});
 }
 
 function getServerErrorMessage(response: Response, serverMessage?: string) {
@@ -696,7 +915,9 @@ function getAvailableScheduledTimeOptions() {
   ) {
     const hours = Math.floor(totalMinutes / 60);
     const minutes = totalMinutes % 60;
-    const timeValue = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+    const timeValue = `${String(hours).padStart(2, "0")}:${String(
+      minutes,
+    ).padStart(2, "0")}`;
     times.push(timeValue);
   }
 

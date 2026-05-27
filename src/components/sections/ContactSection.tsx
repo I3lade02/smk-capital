@@ -60,11 +60,7 @@ const contactFormSchema = z
 
     service: z.string().trim().min(1, "Vyberte prosím službu."),
 
-    message: z
-      .string()
-      .trim()
-      .min(10, "Zpráva musí mít alespoň 10 znaků.")
-      .max(1500, "Zpráva může mít maximálně 1500 znaků."),
+    message: z.string().trim(),
 
     website: z.string().trim(),
 
@@ -545,16 +541,9 @@ export function ContactSection() {
           <div className="grid gap-2">
             <textarea
               name="message"
-              className={`${getInputClassName("message")} min-h-36 resize-none`}
+              className="input min-h-36 resize-none"
               placeholder="Stručně napište, co potřebujete řešit"
-              onInput={() => clearFieldError("message")}
             />
-
-            {formErrors.message ? (
-              <p className="text-xs font-medium text-red-700">
-                {formErrors.message}
-              </p>
-            ) : null}
           </div>
 
           <input
@@ -739,7 +728,7 @@ function getServerErrorMessage(response: Response, serverMessage?: string) {
   if (response.status === 400) {
     return (
       messageFromServer ??
-      "Zprávu se nepodařilo odeslat, protože formulář obsahuje neplatné nebo neúplné údaje. Zkontrolujte prosím jméno, e-mail a zprávu."
+      "Zprávu se nepodařilo odeslat, protože formulář obsahuje neplatné nebo neúplné údaje. Zkontrolujte prosím telefon a e-mail."
     );
   }
 

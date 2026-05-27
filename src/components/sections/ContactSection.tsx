@@ -19,6 +19,8 @@ const scheduledCallLeadTimeMinutes = 5;
 const scheduledCallIntervalMinutes = 15;
 const scheduledCallStartHour = 8;
 const scheduledCallEndHour = 20;
+const privacyConsentText =
+  "Souhlasím se zpracováním osobních údajů za účelem vyřízení požadavku a zpětného kontaktování.";
 
 type CallPreference = "immediately" | "scheduled";
 
@@ -60,11 +62,7 @@ const contactFormSchema = z
 
     service: z.string().trim().min(1, "Vyberte prosím službu."),
 
-    message: z
-      .string()
-      .trim()
-      .min(10, "Zpráva musí mít alespoň 10 znaků.")
-      .max(1500, "Zpráva může mít maximálně 1500 znaků."),
+    message: z.string().trim(),
 
     website: z.string().trim(),
 
@@ -72,6 +70,10 @@ const contactFormSchema = z
 
     callbackDate: z.string().trim(),
     callbackTime: z.string().trim(),
+
+    privacyConsent: z.boolean().refine((value) => value, {
+      message: "Pro odeslání je nutné souhlasit se zpracováním osobních údajů.",
+    }),
   })
   .superRefine((values, ctx) => {
     if (values.website) {
@@ -173,6 +175,7 @@ export function ContactSection() {
       callPreference: selectedCallPreference,
       callbackDate: form.get("callbackDate")?.toString() ?? "",
       callbackTime: form.get("callbackTime")?.toString() ?? "",
+      privacyConsent: form.get("privacyConsent") === "true",
     };
 
     const validationResult = contactFormSchema.safeParse(formValues);
@@ -198,6 +201,7 @@ export function ContactSection() {
       callPreference: validatedCallPreference,
       callbackDate,
       callbackTime,
+      privacyConsent,
     } = validationResult.data;
 
     const callbackAt = combineScheduledCallDateTime(callbackDate, callbackTime);
@@ -236,9 +240,13 @@ export function ContactSection() {
           callbackAt:
             validatedCallPreference === "scheduled" ? callbackAt : null,
           note: message,
+          privacyConsent,
+          privacyConsentText,
+          privacyConsentAt: new Date().toISOString(),
           message: [
             service ? `Služba: ${service}` : null,
             `Preferovaný čas hovoru: ${callbackTimingLabel}`,
+            privacyConsent ? `Souhlas: ${privacyConsentText}` : null,
             message ? `Poznámka: ${message}` : null,
           ]
             .filter(Boolean)
@@ -545,16 +553,9 @@ export function ContactSection() {
           <div className="grid gap-2">
             <textarea
               name="message"
-              className={`${getInputClassName("message")} min-h-36 resize-none`}
+              className="input min-h-36 resize-none"
               placeholder="Stručně napište, co potřebujete řešit"
-              onInput={() => clearFieldError("message")}
             />
-
-            {formErrors.message ? (
-              <p className="text-xs font-medium text-red-700">
-                {formErrors.message}
-              </p>
-            ) : null}
           </div>
 
           <input
@@ -565,6 +566,32 @@ export function ContactSection() {
             autoComplete="off"
             aria-hidden="true"
           />
+
+          <div className="grid gap-2">
+            <label
+              className={
+                formErrors.privacyConsent
+                  ? "flex items-start gap-3 rounded-2xl border border-red-300 bg-red-50 px-4 py-3 text-sm leading-6 text-red-900"
+                  : "flex items-start gap-3 rounded-2xl border border-[#061a34]/10 bg-[#fbf8f3] px-4 py-3 text-sm leading-6 text-[#061a34]/70"
+              }
+            >
+              <input
+                type="checkbox"
+                name="privacyConsent"
+                value="true"
+                required
+                className="mt-1 size-4 rounded border-[#061a34]/25 accent-[#061a34]"
+                aria-invalid={Boolean(formErrors.privacyConsent)}
+                onChange={() => clearFieldError("privacyConsent")}
+              />
+              <span>{privacyConsentText}</span>
+            </label>
+            {formErrors.privacyConsent ? (
+              <p className="text-xs font-medium text-red-700">
+                {formErrors.privacyConsent}
+              </p>
+            ) : null}
+          </div>
 
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <p className="max-w-md text-sm leading-6 text-[#061a34]/55">
@@ -739,7 +766,7 @@ function getServerErrorMessage(response: Response, serverMessage?: string) {
   if (response.status === 400) {
     return (
       messageFromServer ??
-      "Zprávu se nepodařilo odeslat, protože formulář obsahuje neplatné nebo neúplné údaje. Zkontrolujte prosím jméno, e-mail a zprávu."
+      "Zprávu se nepodařilo odeslat, protože formulář obsahuje neplatné nebo neúplné údaje. Zkontrolujte prosím telefon a e-mail."
     );
   }
 

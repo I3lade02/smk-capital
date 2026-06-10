@@ -3,12 +3,13 @@ import { Button } from "./Button";
 import { SectionKicker } from "./SectionKicker";
 
 type PageHeroProps = {
-    kicker: string;
-    title: string;
-    description: string;
-    image?: string;
-    imageAlt?: string;
-    children?: ReactNode;
+  kicker: string;
+  title: string;
+  description: string;
+  image?: string;
+  imageAlt?: string;
+  media?: ReactNode;
+  children?: ReactNode;
 };
 
 export function PageHero({
@@ -17,12 +18,13 @@ export function PageHero({
   description,
   image,
   imageAlt = "",
+  media,
   children,
 }: PageHeroProps) {
   return (
     <section className="relative bg-[var(--section-bg)] px-5 pb-16 pt-36 md:px-12 lg:px-16 lg:pt-40">
       <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-        <div>
+        <div className="min-w-0">
           <SectionKicker>{kicker}</SectionKicker>
 
           <h1 className="max-w-3xl font-serif text-5xl leading-[0.98] tracking-[-0.04em] text-[#061a34] md:text-7xl">
@@ -43,12 +45,14 @@ export function PageHero({
           {children ? <div className="mt-10">{children}</div> : null}
         </div>
 
-        {image ? (
-          <div className="overflow-hidden rounded-[28px] rounded-tl-[110px] shadow-[0_30px_80px_rgba(6, 26, 52, 0.12)]">
+        {media ? (
+          <div className="min-w-0">{media}</div>
+        ) : image ? (
+          <div className="min-w-0 overflow-hidden rounded-[28px] rounded-tl-[110px] shadow-[0_30px_80px_rgba(6, 26, 52, 0.12)]">
             <img src={image} alt={imageAlt} className="h-115 w-full object-cover" />
           </div>
         ) : (
-          <div className="min-h-80 rounded-[28px] rounded-tl-[110px] bg-[#061a34]" />
+          <div className="min-h-80 min-w-0 rounded-[28px] rounded-tl-[110px] bg-[#061a34]" />
         )}
       </div>
     </section>

@@ -1,16 +1,19 @@
-import { IconShieldCheck } from "@tabler/icons-react";
 import { heroHighlights } from "../../constants/home";
-import { images, siteConfig } from "../../constants/site";
+import { siteConfig } from "../../constants/site";
+import { useInteractiveAutoplayVideo } from "../../hooks/useInteractiveAutoplayVideo";
 import { Button } from "../ui/Button";
 
 export function HeroSection() {
+  const { videoRef, videoInteractionProps } =
+    useInteractiveAutoplayVideo();
+
   return (
     <section
       id="home"
       className="relative overflow-hidden bg-(--section-bg) px-5 pb-20 pt-32 md:px-12 lg:px-16 lg:pb-28 lg:pt-28"
     >
       <div className="grid items-center gap-12 lg:grid-cols-[0.88fr_1.12fr]">
-        <div className="relative z-10 max-w-2xl">
+        <div className="relative z-10 min-w-0 max-w-2xl">
           <p className="inline-flex rounded-full border border-[#c89750]/25 bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.28em] text-[#9f7035] shadow-[0_16px_40px_rgba(6,26,52,0.08)]">
             SMK CAPITAL
           </p>
@@ -51,27 +54,23 @@ export function HeroSection() {
           </div>
         </div>
 
-        <div className="relative">
-          <div className="overflow-hidden rounded-[28px] rounded-tl-[110px] bg-white shadow-[0_30px_80px_rgba(6,26,52,0.12)]">
-            <img
-              src={images.homeHero}
-              alt="Professional financial consultation in a modern office"
-              className="h-110 w-full object-cover md:h-140"
-            />
-          </div>
-
-          <div className="absolute bottom-8 right-6 max-w-xs rounded-3xl bg-white p-7 shadow-[0_25px_70px_rgba(6,26,52,0.16)]">
-            <div className="flex items-center gap-4">
-              <div className="flex size-14 items-center justify-center rounded-2xl border border-[#d7b174] text-[#c89750]">
-                <IconShieldCheck size={28} />
-              </div>
-              <div>
-                <p className="font-serif text-2xl">Telefonicky i osobně</p>
-                <p className="text-sm leading-6 text-[#061a34]/60">
-                  Finance i papíry řešíme za vás.
-                </p>
-              </div>
-            </div>
+        <div className="min-w-0">
+          <div className="aspect-video overflow-hidden rounded-[28px] rounded-tl-[110px] shadow-[0_30px_80px_rgba(6,26,52,0.12)]">
+            <video
+              ref={videoRef}
+              {...videoInteractionProps}
+              src={`${import.meta.env.BASE_URL}reklama_final.mp4`}
+              aria-label="Představení služeb SMK Capital"
+              className="size-full object-cover"
+              autoPlay
+              controls
+              loop
+              muted
+              playsInline
+              preload="metadata"
+            >
+              Váš prohlížeč nepodporuje přehrávání videa.
+            </video>
           </div>
         </div>
       </div>

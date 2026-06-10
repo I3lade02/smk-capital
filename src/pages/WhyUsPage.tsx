@@ -1,8 +1,8 @@
 import { ContactSection } from "../components/sections/ContactSection";
 import { PageHero } from "../components/ui/PageHero";
+import { Logo } from "../components/ui/Logo";
 import { SectionKicker } from "../components/ui/SectionKicker";
 import { benefits } from "../constants/benefits";
-import { images } from "../constants/site";
 
 export function WhyUsPage() {
   return (
@@ -11,8 +11,15 @@ export function WhyUsPage() {
         kicker="Proč my"
         title="Řešíme finance tak, aby dávaly smysl dlouhodobě."
         description="Neskládáme vedle sebe jednotlivé smlouvy. Stavíme přehledný systém, který odpovídá vaší situaci a šetří vám čas."
-        image={images.whyUsHero}
-        imageAlt="Financial planning notes and laptops on an office desk"
+        media={
+          <div className="relative flex min-h-115 items-center justify-center overflow-hidden rounded-[28px] rounded-tl-[110px] bg-[#061a34] p-5 shadow-[0_30px_80px_rgba(6,26,52,0.14)] md:p-10">
+            <div className="absolute -right-20 -top-20 size-64 rounded-full bg-[#c89750]/10 blur-3xl" />
+            <div className="absolute -bottom-24 -left-16 size-72 rounded-full bg-white/5 blur-3xl" />
+            <div className="relative z-10">
+              <Logo variant="light" />
+            </div>
+          </div>
+        }
       />
 
       <section className="bg-white px-5 py-20 md:px-12 lg:px-16">

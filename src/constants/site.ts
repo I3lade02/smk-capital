@@ -14,12 +14,6 @@ export const siteConfig = {
 };
 
 export const images = {
-  homeHero:
-    "https://images.unsplash.com/photo-1758518729711-1cbacd55efdb?auto=format&fit=crop&w=1600&q=80",
-  aboutHero:
-    "https://images.unsplash.com/photo-1758518731706-be5d5230e5a5?auto=format&fit=crop&w=1600&q=80",
-  whyUsHero:
-    "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=80",
   hero:
     "https://images.unsplash.com/photo-1609220136736-443140cffec6?auto=format&fit=crop&w=1400&q=80",
   car:

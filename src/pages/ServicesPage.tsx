@@ -1,8 +1,7 @@
 import { IconCircleCheck } from "@tabler/icons-react";
-import { images } from "../constants/site";
 import { processSteps } from "../constants/home";
 import { serviceCategories } from "../constants/services";
-import { PageHero } from "../components/ui/PageHero";
+import { PageHero, PageHeroLogoMedia } from "../components/ui/PageHero";
 import { ContactSection } from "../components/sections/ContactSection";
 import { SectionKicker } from "../components/ui/SectionKicker";
 
@@ -13,7 +12,7 @@ export function ServicesPage() {
         kicker="Přehled služeb"
         title="Pojištění, financování i servis smluv pod jednou střechou."
         description="Pomáháme klientům řešit finance jako celek. Nejen jednotlivé produkty, ale i jejich návaznost, správu a dlouhodobý přehled."
-        image={images.house}
+        media={<PageHeroLogoMedia />}
       />
 
       <section className="bg-[var(--section-bg)] px-5 py-20 md:px-12 lg:px-16">

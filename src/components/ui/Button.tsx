@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { MouseEventHandler, ReactNode } from "react";
 import { IconArrowRight } from "@tabler/icons-react";
 import { cn } from "../../lib/cn";
 import { scrollToSectionFromHref } from "../../lib/sectionLinks";
@@ -8,6 +8,7 @@ type ButtonProps = {
   href?: string;
   variant?: "primary" | "secondary";
   className?: string;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
 };
 
 export function Button({
@@ -15,11 +16,18 @@ export function Button({
   href = "#",
   variant = "primary",
   className,
+  onClick,
 }: ButtonProps) {
   return (
     <a
       href={href}
-      onClick={(event) => scrollToSectionFromHref(event, href)}
+      onClick={(event) => {
+        onClick?.(event);
+
+        if (!event.defaultPrevented) {
+          scrollToSectionFromHref(event, href);
+        }
+      }}
       className={cn(
         "inline-flex items-center justify-center gap-3 rounded-full px-7 py-4 text-sm font-semibold transition",
         variant === "primary" &&

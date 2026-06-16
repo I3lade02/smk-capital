@@ -60,7 +60,7 @@ export function AboutPage() {
               {aboutHighlights.map((item) => (
                 <span
                   key={item}
-                  className="rounded-full border border-[#061a34]/10 bg-[var(--section-bg)] px-4 py-2 text-sm text-[#061a34]/70"
+                  className="rounded-full border border-[#061a34]/10 bg-(--section-bg) px-4 py-2 text-sm text-[#061a34]/70"
                 >
                   {item}
                 </span>
@@ -76,7 +76,7 @@ export function AboutPage() {
         </div>
       </section>
 
-      <section className="bg-[var(--section-bg)] px-5 py-20 md:px-12 lg:px-16">
+      <section className="bg-(--section-bg) px-5 py-20 md:px-12 lg:px-16">
         <div className="mb-12 max-w-3xl">
           <SectionKicker>Video</SectionKicker>
           <h2 className="font-serif text-5xl tracking-[-0.03em]">

@@ -1,9 +1,9 @@
 import { IconClockHour3, IconMail, IconMapPin, IconPhone } from "@tabler/icons-react";
 import { ContactSection } from "../components/sections/ContactSection";
-import { PageHero } from "../components/ui/PageHero";
+import { PageHero, PageHeroLogoMedia } from "../components/ui/PageHero";
 import { SectionKicker } from "../components/ui/SectionKicker";
 import { quickActions } from "../constants/services";
-import { images, siteConfig } from "../constants/site";
+import { siteConfig } from "../constants/site";
 
 const contactItems = [
   {
@@ -39,7 +39,7 @@ export function ContactPage() {
         kicker="Kontakt"
         title="Požádejte o zavolání nebo orientační propočet."
         description="Napište nám nebo zavolejte. Ozveme se vám zpět a projdeme s vámi pojištění, úvěr, hypotéku nebo správu stávajících smluv."
-        image={images.house}
+        media={<PageHeroLogoMedia />}
       />
 
       <section className="bg-white px-5 py-20 md:px-12 lg:px-16">

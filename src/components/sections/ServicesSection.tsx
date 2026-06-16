@@ -1,4 +1,6 @@
 import { IconArrowRight } from "@tabler/icons-react";
+import type { MouseEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import { images } from "../../constants/site";
 import { quickActions, serviceCategories } from "../../constants/services";
 import { scrollToSectionFromHref } from "../../lib/sectionLinks";
@@ -7,6 +9,20 @@ import { SectionKicker } from "../ui/SectionKicker";
 
 export function ServicesSection() {
   const contactHref = "#contact";
+  const navigate = useNavigate();
+
+  function handleQuickActionClick(
+    event: MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) {
+    if (!href.startsWith("/")) {
+      return;
+    }
+
+    event.preventDefault();
+    navigate(href);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   return (
     <section
@@ -50,7 +66,7 @@ export function ServicesSection() {
                 key={service.number}
                 href={contactHref}
                 onClick={(event) => scrollToSectionFromHref(event, contactHref)}
-                className="interactive-card group block rounded-3xl bg-white p-8 shadow-[0_22px_55px_rgba(6,26,52,0.1)] transition duration-300 hover:-translate-y-2 hover:shadow-[0_30px_75px_rgba(6,26,52,0.16)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c89750]/45 focus-visible:ring-offset-4 focus-visible:ring-offset-[var(--section-bg)]"
+                className="interactive-card group block rounded-3xl bg-white p-8 shadow-[0_22px_55px_rgba(6,26,52,0.1)] transition duration-300 hover:-translate-y-2 hover:shadow-[0_30px_75px_rgba(6,26,52,0.16)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c89750]/45 focus-visible:ring-offset-4 focus-visible:ring-offset-(--section-bg)"
               >
                 <p className="font-serif text-2xl text-[#c89750]">
                   {service.number}
@@ -121,6 +137,7 @@ export function ServicesSection() {
                 href={action.href}
                 variant={action.highlighted ? "secondary" : "primary"}
                 className={action.highlighted ? "mt-8 border-white/20 text-white hover:bg-white/10" : "mt-8"}
+                onClick={(event) => handleQuickActionClick(event, action.href)}
               >
                 {action.label}
               </Button>

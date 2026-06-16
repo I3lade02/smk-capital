@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Button } from "./Button";
+import { Logo } from "./Logo";
 import { SectionKicker } from "./SectionKicker";
 
 type PageHeroProps = {
@@ -12,12 +13,23 @@ type PageHeroProps = {
   children?: ReactNode;
 };
 
+export function PageHeroLogoMedia() {
+  return (
+    <div className="relative flex min-h-115 items-center justify-center overflow-hidden rounded-[28px] rounded-tl-[110px] bg-[#061a34] p-5 shadow-[0_30px_80px_rgba(6,26,52,0.14)] md:p-10">
+      <div className="absolute -right-20 -top-20 size-64 rounded-full bg-[#c89750]/10 blur-3xl" />
+      <div className="absolute -bottom-24 -left-16 size-72 rounded-full bg-white/5 blur-3xl" />
+      <div className="relative z-10">
+        <Logo variant="light" />
+      </div>
+    </div>
+  );
+}
+
 export function PageHero({
   kicker,
   title,
   description,
   image,
-  imageAlt = "",
   media,
   children,
 }: PageHeroProps) {
@@ -48,8 +60,8 @@ export function PageHero({
         {media ? (
           <div className="min-w-0">{media}</div>
         ) : image ? (
-          <div className="min-w-0 overflow-hidden rounded-[28px] rounded-tl-[110px] shadow-[0_30px_80px_rgba(6, 26, 52, 0.12)]">
-            <img src={image} alt={imageAlt} className="h-115 w-full object-cover" />
+          <div className="min-w-0">
+            <PageHeroLogoMedia />
           </div>
         ) : (
           <div className="min-h-80 min-w-0 rounded-[28px] rounded-tl-[110px] bg-[#061a34]" />

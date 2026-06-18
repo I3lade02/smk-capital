@@ -1,8 +1,16 @@
-import { IconCheck } from "@tabler/icons-react";
+import {
+  IconCheck,
+  IconClockHour3,
+  IconMail,
+  IconMapPin,
+  IconPhone,
+} from "@tabler/icons-react";
 import { ContactSection } from "../components/sections/ContactSection";
 import { PageHero } from "../components/ui/PageHero";
 import { SectionKicker } from "../components/ui/SectionKicker";
+import { benefits } from "../constants/benefits";
 import { aboutHighlights, aboutParagraphs } from "../constants/home";
+import { siteConfig } from "../constants/site";
 import { useInteractiveAutoplayVideo } from "../hooks/useInteractiveAutoplayVideo";
 
 const watchedAreas = [
@@ -14,6 +22,35 @@ const watchedAreas = [
   "vozový park",
   "domácnost",
   "váš klid",
+];
+
+const contactItems = [
+  {
+    label: "Telefon",
+    value: siteConfig.phone,
+    href: siteConfig.phoneHref,
+    icon: IconPhone,
+  },
+  {
+    label: "E-mail",
+    value: siteConfig.email,
+    href: siteConfig.emailHref,
+    icon: IconMail,
+  },
+  ...(siteConfig.address.length > 0
+    ? [
+        {
+          label: "Adresa",
+          value: siteConfig.address.join(", "),
+          icon: IconMapPin,
+        },
+      ]
+    : []),
+  {
+    label: "Dostupnost",
+    value: "Po-Ne, 8:00-20:00",
+    icon: IconClockHour3,
+  },
 ];
 
 export function AboutPage() {
@@ -76,6 +113,40 @@ export function AboutPage() {
         </div>
       </section>
 
+      <section className="bg-white px-5 py-20 md:px-12 lg:px-16">
+        <div className="mb-12 max-w-3xl">
+          <SectionKicker>Naše výhody</SectionKicker>
+          <h2 className="font-serif text-5xl leading-tight tracking-[-0.03em]">
+            Rozdíl poznáte hlavně v přístupu.
+          </h2>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {benefits.map((benefit) => {
+            const Icon = benefit.icon;
+
+            return (
+              <article
+                key={benefit.title}
+                className="interactive-card rounded-3xl bg-[var(--section-bg)] p-8 shadow-[0_22px_55px_rgba(6,26,52,0.08)]"
+              >
+                <Icon
+                  size={40}
+                  strokeWidth={1.4}
+                  className="interactive-card-icon text-[#c89750]"
+                />
+                <h3 className="mt-7 font-serif text-3xl leading-tight">
+                  {benefit.title}
+                </h3>
+                <p className="mt-4 leading-7 text-[#061a34]/60">
+                  {benefit.description}
+                </p>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
       <section className="bg-(--section-bg) px-5 py-20 md:px-12 lg:px-16">
         <div className="mb-12 max-w-3xl">
           <SectionKicker>Video</SectionKicker>
@@ -135,6 +206,47 @@ export function AboutPage() {
               Vy se nestaráte. My se staráme.
             </p>
           </aside>
+        </div>
+      </section>
+
+      <section className="bg-white px-5 py-20 md:px-12 lg:px-16">
+        <div className="mb-12 max-w-3xl">
+          <SectionKicker>Kontaktní údaje</SectionKicker>
+          <h2 className="font-serif text-5xl tracking-[-0.03em]">
+            Jsme vám k dispozici
+          </h2>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          {contactItems.map((item) => {
+            const Icon = item.icon;
+
+            return (
+              <article
+                key={item.label}
+                className="interactive-card rounded-3xl bg-(--section-bg) p-8"
+              >
+                <Icon
+                  size={42}
+                  strokeWidth={1.4}
+                  className="interactive-card-icon text-[#c89750]"
+                />
+                <h3 className="mt-6 font-serif text-2xl">{item.label}</h3>
+                {"href" in item && item.href ? (
+                  <a
+                    href={item.href}
+                    className="mt-4 block break-words text-lg font-semibold leading-7 text-[#061a34] transition hover:text-[#c89750] md:text-xl"
+                  >
+                    {item.value}
+                  </a>
+                ) : (
+                  <p className="mt-4 break-words text-lg font-semibold leading-7 text-[#061a34] md:text-xl">
+                    {item.value}
+                  </p>
+                )}
+              </article>
+            );
+          })}
         </div>
       </section>
 

@@ -1,11 +1,15 @@
 import { IconCircleCheck } from "@tabler/icons-react";
+import type { MouseEvent } from "react";
 import { processSteps } from "../constants/home";
 import { serviceCategories } from "../constants/services";
 import { PageHero, PageHeroLogoMedia } from "../components/ui/PageHero";
 import { ContactSection } from "../components/sections/ContactSection";
 import { SectionKicker } from "../components/ui/SectionKicker";
+import { scrollToSectionFromHref } from "../lib/sectionLinks";
 
 export function ServicesPage() {
+  const contactHref = "#contact";
+
   return (
     <>
       <PageHero
@@ -28,9 +32,13 @@ export function ServicesPage() {
             const Icon = service.icon;
 
             return (
-              <article
+              <a
                 key={service.title}
-                className="interactive-card group rounded-3xl bg-white p-8 shadow-[0_22px_55px_rgba(6,26,52,0.09)] transition hover:-translate-y-1 hover:shadow-[0_30px_75px_rgba(6,26,52,0.15)]"
+                href={contactHref}
+                onClick={(event: MouseEvent<HTMLAnchorElement>) =>
+                  scrollToSectionFromHref(event, contactHref)
+                }
+                className="interactive-card group block rounded-3xl bg-white p-8 shadow-[0_22px_55px_rgba(6,26,52,0.09)] transition hover:-translate-y-1 hover:shadow-[0_30px_75px_rgba(6,26,52,0.15)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c89750]/45 focus-visible:ring-offset-4 focus-visible:ring-offset-(--section-bg)"
               >
                 <div className="flex items-start justify-between gap-6">
                   <p className="font-serif text-3xl text-[#c89750]">
@@ -53,7 +61,7 @@ export function ServicesPage() {
                     </li>
                   ))}
                 </ul>
-              </article>
+              </a>
             );
           })}
         </div>

@@ -1,6 +1,6 @@
 import { IconArrowRight } from "@tabler/icons-react";
 import type { MouseEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { images } from "../../constants/site";
 import { quickActions, serviceCategories } from "../../constants/services";
 import { scrollToSectionFromHref } from "../../lib/sectionLinks";
@@ -47,13 +47,14 @@ export function ServicesSection() {
               funkční celek, ne jako oddělené položky bez souvislostí.
             </p>
 
-            <a
-              href="/#/sluzby"
+            <Link
+              to="/sluzby"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               className="interactive-link mt-8 inline-flex items-center gap-3 text-sm font-semibold text-[#c89750]"
             >
               Zobrazit všechny služby
               <IconArrowRight size={16} />
-            </a>
+            </Link>
           </div>
         </div>
 

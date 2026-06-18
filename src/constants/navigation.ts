@@ -1,7 +1,5 @@
 import {
-  IconHeartHandshake,
   IconHome,
-  IconMail,
   IconShieldCheck,
   IconUsersGroup,
 } from "@tabler/icons-react";
@@ -22,15 +20,5 @@ export const sidebarNavigation: NavItem[] = [
     label: "O nás",
     href: "/o-nas",
     icon: IconUsersGroup,
-  },
-  {
-    label: "Proč my",
-    href: "/proc-my",
-    icon: IconHeartHandshake,
-  },
-  {
-    label: "Kontakt",
-    href: "/kontakt",
-    icon: IconMail,
   },
 ];

@@ -2,6 +2,7 @@ import {
   IconBrandFacebook,
   IconBrandInstagram,
   IconBrandLinkedin,
+  IconBrandTiktok,
 } from "@tabler/icons-react";
 import { siteConfig } from "../../constants/site";
 import { serviceCategories } from "../../constants/services";
@@ -21,6 +22,11 @@ const socialLinks = [
   {
     label: "LinkedIn",
     icon: IconBrandLinkedin,
+    href: "#",
+  },
+  {
+    label: "TikTok",
+    icon: IconBrandTiktok,
     href: "#",
   },
 ];

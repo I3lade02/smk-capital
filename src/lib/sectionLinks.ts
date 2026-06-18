@@ -20,4 +20,8 @@ export function scrollToSectionFromHref(
 
   event.preventDefault();
   target.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  if (target.hasAttribute("tabindex")) {
+    target.focus({ preventScroll: true });
+  }
 }

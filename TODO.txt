@@ -1,3 +1,0 @@
-1) could you add an animation of moving glow across the header on HomePage
-2) i would need an animation for button at the top of the HomePage "Požadavek na zavolání" make it bouncy
-3) at the bottom of every page make 2 buttons something like "Další stránka"/"Předchozí stránka", so visitor can browse without looking to sidebar

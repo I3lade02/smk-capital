@@ -1,6 +1,3 @@
-1) In footer add button for TikTok
-2) On ServicesPage in section "Co řešíme" when i click on any of those 3 cards, focus the site on contact form
-3) HomePage button under the picture with the car "Zobrazit všechny služby" redirect me to ServicesPage
-4) move section "Naše výhody" from WhyUsPage to AboutPage
-5) move section "Jsme Vám k dispozici" from ContactPage to AboutPage + make contact info on those cards more visible/bigger
-6) remove site WhyUsPage and ContactPage and all about them from website
+1) could you add an animation of moving glow across the header on HomePage
+2) i would need an animation for button at the top of the HomePage "Požadavek na zavolání" make it bouncy
+3) at the bottom of every page make 2 buttons something like "Další stránka"/"Předchozí stránka", so visitor can browse without looking to sidebar

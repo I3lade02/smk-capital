@@ -22,3 +22,30 @@ export const sidebarNavigation: NavItem[] = [
     icon: IconUsersGroup,
   },
 ];
+
+export const pageNavigation = [
+  {
+    label: "Domů",
+    href: "/",
+  },
+  {
+    label: "Služby",
+    href: "/sluzby",
+  },
+  {
+    label: "Revize smluv",
+    href: "/revize-smluv",
+  },
+  {
+    label: "Autopojištění",
+    href: "/autopojisteni",
+  },
+  {
+    label: "Hypoteční propočet",
+    href: "/hypoteka-propocet",
+  },
+  {
+    label: "O nás",
+    href: "/o-nas",
+  },
+];

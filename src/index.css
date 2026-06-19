@@ -120,6 +120,51 @@ body {
   transform: translate3d(0, -3px, 0) scale(1.06);
 }
 
+.home-hero-title-glow {
+  --home-title-base: #061a34;
+  animation: home-title-letter-glow 5.6s ease-in-out infinite;
+  background-image: linear-gradient(
+    105deg,
+    var(--home-title-base) 0%,
+    var(--home-title-base) 36%,
+    #ffffff 47%,
+    #d7b174 52%,
+    var(--home-title-base) 64%,
+    var(--home-title-base) 100%
+  );
+  background-position: 130% 50%;
+  background-size: 260% 100%;
+  background-clip: text;
+  color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.home-hero-title-glow span {
+  --home-title-base: #c89750;
+  animation: home-title-letter-glow 5.6s ease-in-out infinite;
+  background-image: linear-gradient(
+    105deg,
+    var(--home-title-base) 0%,
+    var(--home-title-base) 36%,
+    #fff4d8 47%,
+    #ffffff 52%,
+    var(--home-title-base) 64%,
+    var(--home-title-base) 100%
+  );
+  background-position: 130% 50%;
+  background-size: 260% 100%;
+  background-clip: text;
+  color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.home-hero-cta-bounce {
+  animation: home-cta-bounce 2.8s cubic-bezier(0.32, 0, 0.67, 0) infinite;
+  transform-origin: center bottom;
+}
+
 .interactive-link svg,
 .sidebar-link-icon {
   transition: transform 220ms ease;
@@ -243,12 +288,45 @@ body {
   }
 }
 
+@keyframes home-title-letter-glow {
+  0%,
+  28% {
+    background-position: 130% 50%;
+  }
+
+  58%,
+  100% {
+    background-position: -30% 50%;
+  }
+}
+
+@keyframes home-cta-bounce {
+  0%,
+  12%,
+  24%,
+  36%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  18% {
+    transform: translate3d(0, -8px, 0) scale(1.035, 0.965);
+  }
+
+  30% {
+    transform: translate3d(0, -4px, 0) scale(1.015, 0.985);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .contact-submit-button,
   .contact-submit-button::before,
   .interactive-card,
   .interactive-card::after,
   .interactive-card-icon,
+  .home-hero-title-glow,
+  .home-hero-title-glow span,
+  .home-hero-cta-bounce,
   .interactive-link svg,
   .sidebar-link::before,
   .sidebar-link-icon,
@@ -260,6 +338,9 @@ body {
 
   .interactive-card:hover,
   .interactive-card:hover .interactive-card-icon,
+  .home-hero-title-glow,
+  .home-hero-title-glow span,
+  .home-hero-cta-bounce,
   .interactive-link:hover svg,
   .sidebar-link:hover .sidebar-link-icon,
   .sidebar-link[aria-current="page"] .sidebar-link-icon {

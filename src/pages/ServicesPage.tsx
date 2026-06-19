@@ -1,10 +1,11 @@
 import { IconCircleCheck } from "@tabler/icons-react";
 import type { MouseEvent } from "react";
+import { ContractReviewSection } from "../components/sections/ContractReviewSection";
+import { ContactSection } from "../components/sections/ContactSection";
+import { PageHero, PageHeroLogoMedia } from "../components/ui/PageHero";
+import { SectionKicker } from "../components/ui/SectionKicker";
 import { processSteps } from "../constants/home";
 import { serviceCategories } from "../constants/services";
-import { PageHero, PageHeroLogoMedia } from "../components/ui/PageHero";
-import { ContactSection } from "../components/sections/ContactSection";
-import { SectionKicker } from "../components/ui/SectionKicker";
 import { scrollToSectionFromHref } from "../lib/sectionLinks";
 
 export function ServicesPage() {
@@ -66,6 +67,8 @@ export function ServicesPage() {
           })}
         </div>
       </section>
+
+      <ContractReviewSection />
 
       <section className="bg-white px-5 py-20 md:px-12 lg:px-16">
         <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">

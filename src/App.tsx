@@ -1,5 +1,6 @@
 import { Footer } from "./components/layout/Footer";
 import { Header } from "./components/layout/Header";
+import { PageNavigation } from "./components/layout/PageNavigation";
 import { Sidebar } from "./components/layout/Sidebar";
 import { useScrollReveal } from "./hooks/useScrollReveal";
 import { AppRoutes } from "./routes/AppRoutes";
@@ -18,6 +19,7 @@ export default function App() {
         <div className="relative overflow-hidden">
           <Header />
           <AppRoutes />
+          <PageNavigation />
           <Footer />
         </div>
       </div>

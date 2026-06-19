@@ -18,7 +18,7 @@ export function HeroSection() {
             SMK CAPITAL
           </p>
 
-          <h1 className="mt-6 font-serif text-6xl leading-[0.92] tracking-tighter text-[#061a34] md:text-8xl xl:text-[108px]">
+          <h1 className="home-hero-title-glow mt-6 font-serif text-6xl leading-[0.92] tracking-tighter text-[#061a34] md:text-8xl xl:text-[108px]">
             Vy neřešíte nic.
             <br />
             <span className="text-[#c89750]">My řešíme vše.</span>
@@ -36,7 +36,7 @@ export function HeroSection() {
           <div className="mt-9 flex flex-col gap-4 sm:flex-row">
             <Button
               href="#contact"
-              className="px-10 py-5 text-lg font-bold md:px-12 md:py-6 md:text-xl"
+              className="home-hero-cta-bounce px-10 py-5 text-lg font-bold md:px-12 md:py-6 md:text-xl"
             >
               Požadavek na zavolání
             </Button>

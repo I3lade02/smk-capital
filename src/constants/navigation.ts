@@ -1,7 +1,5 @@
 import {
-  IconHeartHandshake,
   IconHome,
-  IconMail,
   IconShieldCheck,
   IconUsersGroup,
 } from "@tabler/icons-react";
@@ -23,14 +21,31 @@ export const sidebarNavigation: NavItem[] = [
     href: "/o-nas",
     icon: IconUsersGroup,
   },
+];
+
+export const pageNavigation = [
   {
-    label: "Proč my",
-    href: "/proc-my",
-    icon: IconHeartHandshake,
+    label: "Domů",
+    href: "/",
   },
   {
-    label: "Kontakt",
-    href: "/kontakt",
-    icon: IconMail,
+    label: "Služby",
+    href: "/sluzby",
+  },
+  {
+    label: "Revize smluv",
+    href: "/revize-smluv",
+  },
+  {
+    label: "Autopojištění",
+    href: "/autopojisteni",
+  },
+  {
+    label: "Hypoteční propočet",
+    href: "/hypoteka-propocet",
+  },
+  {
+    label: "O nás",
+    href: "/o-nas",
   },
 ];

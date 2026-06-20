@@ -34,19 +34,6 @@ export function AboutSection() {
               <p key={paragraph}>{paragraph}</p>
             ))}
           </div>
-
-          <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-6">
-            <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#c89750]">
-              Video
-            </p>
-            <h3 className="mt-4 font-serif text-3xl leading-tight">
-              Představení SMK Capital
-            </h3>
-            <p className="mt-3 max-w-xl text-sm leading-7 text-white/65">
-              Do této sekce doplníme krátké video s představením firmy a způsobu
-              spolupráce.
-            </p>
-          </div>
         </div>
       </div>
     </section>

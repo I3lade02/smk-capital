@@ -403,7 +403,7 @@ export function ContractReviewForm() {
                   className="mt-0.5 shrink-0 text-[#c89750]"
                   aria-hidden="true"
                 />
-                <span className="min-w-0 break-words">
+                <span className="min-w-0 wrap-break-word">
                   {file.name} ({formatFileSize(file.size)})
                 </span>
               </li>

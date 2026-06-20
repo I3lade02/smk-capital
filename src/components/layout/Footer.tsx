@@ -4,6 +4,7 @@ import {
   IconBrandLinkedin,
   IconBrandTiktok,
 } from "@tabler/icons-react";
+import { Link } from "react-router-dom";
 import { siteConfig } from "../../constants/site";
 import { serviceCategories } from "../../constants/services";
 import { Logo } from "../ui/Logo";
@@ -12,22 +13,22 @@ const socialLinks = [
   {
     label: "Facebook",
     icon: IconBrandFacebook,
-    href: "#",
+    href: "/nenalezeno",
   },
   {
     label: "Instagram",
     icon: IconBrandInstagram,
-    href: "#",
+    href: "/nenalezeno",
   },
   {
     label: "LinkedIn",
     icon: IconBrandLinkedin,
-    href: "#",
+    href: "/nenalezeno",
   },
   {
     label: "TikTok",
     icon: IconBrandTiktok,
-    href: "#",
+    href: "/nenalezeno",
   },
 ];
 
@@ -69,14 +70,14 @@ export function Footer() {
               const Icon = social.icon;
 
               return (
-                <a
+                <Link
                   key={social.label}
-                  href={social.href}
-                  aria-label={social.label}
+                  to={social.href}
+                  aria-label={`${social.label} – stránka zatím není dostupná`}
                   className="flex size-10 items-center justify-center rounded-full bg-[#061a34] text-white transition hover:bg-[#c89750]"
                 >
                   <Icon size={19} strokeWidth={1.8} aria-hidden="true" />
-                </a>
+                </Link>
               );
             })}
           </div>

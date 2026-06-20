@@ -5,12 +5,16 @@ import { pageNavigation } from "../../constants/navigation";
 export function PageNavigation() {
   const { pathname } = useLocation();
   const currentIndex = pageNavigation.findIndex((item) => item.href === pathname);
-  const activeIndex = currentIndex >= 0 ? currentIndex : 0;
+
+  if (currentIndex < 0) {
+    return null;
+  }
+
   const previous =
     pageNavigation[
-      (activeIndex - 1 + pageNavigation.length) % pageNavigation.length
+      (currentIndex - 1 + pageNavigation.length) % pageNavigation.length
     ];
-  const next = pageNavigation[(activeIndex + 1) % pageNavigation.length];
+  const next = pageNavigation[(currentIndex + 1) % pageNavigation.length];
 
   return (
     <nav

@@ -55,7 +55,7 @@ export function HeroSection() {
         </div>
 
         <div className="min-w-0">
-          <div className="aspect-video overflow-hidden rounded-[28px] rounded-tl-[110px] shadow-[0_30px_80px_rgba(6,26,52,0.12)]">
+          <div className="aspect-video overflow-hidden rounded-[28px] shadow-[0_30px_80px_rgba(6,26,52,0.12)]">
             <video
               ref={videoRef}
               {...videoInteractionProps}

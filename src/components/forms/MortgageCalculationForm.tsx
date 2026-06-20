@@ -40,9 +40,9 @@ const mortgageCalculationFormSchema = z.object({
     "Příjmy musí být kladné číslo.",
     true,
   ),
-  monthlyPayment: createFinancialFieldSchema(
-    "Měsíční splátka je povinná.",
-    "Měsíční splátka musí být nula nebo kladné číslo.",
+  borrowAmount: createFinancialFieldSchema(
+    "Částka je povinná.",
+    "Částka musí být celé číslo.",
     false,
   ),
   otherObligations: createFinancialFieldSchema(
@@ -79,7 +79,7 @@ type MortgageCalculationFormErrors = Partial<
 const fieldErrorKeys = [
   "loanYears",
   "monthlyIncome",
-  "monthlyPayment",
+  "borrowAmount",
   "otherObligations",
   "email",
   "phone",
@@ -250,12 +250,12 @@ export function MortgageCalculationForm() {
         />
 
         <MoneyField
-          id="monthlyPayment"
-          label="Kolik dělá měsíční splátka"
+          id="borrowAmount"
+          label="Kolik si chcete půjčit ?"
           placeholder="18000"
-          error={formErrors.monthlyPayment}
-          inputClassName={getInputClassName("monthlyPayment")}
-          onInput={() => clearFieldError("monthlyPayment")}
+          error={formErrors.borrowAmount}
+          inputClassName={getInputClassName("borrowAmount")}
+          onInput={() => clearFieldError("borrowAmount")}
         />
 
         <MoneyField
@@ -423,7 +423,7 @@ export function MortgageCalculationForm() {
 }
 
 type MoneyFieldProps = {
-  id: "monthlyIncome" | "monthlyPayment" | "otherObligations";
+  id: "monthlyIncome" | "borrowAmount" | "otherObligations";
   label: string;
   placeholder: string;
   error?: string;

@@ -14,23 +14,30 @@ const socialLinks = [
     label: "Facebook",
     icon: IconBrandFacebook,
     href: "/nenalezeno",
+    external: false,
   },
   {
     label: "Instagram",
     icon: IconBrandInstagram,
-    href: "/nenalezeno",
+    href: "https://www.instagram.com/smk.capital",
+    external: true,
   },
   {
     label: "LinkedIn",
     icon: IconBrandLinkedin,
-    href: "/nenalezeno",
+    href: "https://www.linkedin.com/in/smk-capital-b4394541b",
+    external: true,
   },
   {
     label: "TikTok",
     icon: IconBrandTiktok,
     href: "/nenalezeno",
+    external: false,
   },
 ];
+
+const socialLinkClassName =
+  "flex size-10 items-center justify-center rounded-full bg-[#061a34] text-white transition hover:bg-[#c89750]";
 
 export function Footer() {
   return (
@@ -68,15 +75,33 @@ export function Footer() {
           <div className="flex gap-3">
             {socialLinks.map((social) => {
               const Icon = social.icon;
+              const icon = (
+                <Icon size={19} strokeWidth={1.8} aria-hidden="true" />
+              );
+
+              if (social.external) {
+                return (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                    className={socialLinkClassName}
+                  >
+                    {icon}
+                  </a>
+                );
+              }
 
               return (
                 <Link
                   key={social.label}
                   to={social.href}
                   aria-label={`${social.label} – stránka zatím není dostupná`}
-                  className="flex size-10 items-center justify-center rounded-full bg-[#061a34] text-white transition hover:bg-[#c89750]"
+                  className={socialLinkClassName}
                 >
-                  <Icon size={19} strokeWidth={1.8} aria-hidden="true" />
+                  {icon}
                 </Link>
               );
             })}

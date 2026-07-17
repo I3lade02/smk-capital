@@ -3,6 +3,7 @@
 :root {
   --page-bg: #eee5d8;
   --section-bg: #f2ece2;
+  --partners-gap: 1.25rem;
 }
 
 html {
@@ -354,5 +355,111 @@ body {
   .sidebar-link:hover .sidebar-link-icon,
   .sidebar-link[aria-current="page"] .sidebar-link-icon {
     transform: none;
+  }
+}
+
+
+.partners-marquee-row {
+  display: flex;
+  gap: var(--partners-gap);
+  overflow: hidden;
+  user-select: none;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 6%,
+    #000 94%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 6%,
+    #000 94%,
+    transparent
+  );
+}
+
+.partners-marquee-track {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--partners-gap);
+  min-width: max-content;
+  animation: partners-marquee-left 50s linear infinite;
+  will-change: transform;
+}
+
+.partners-marquee-track--reverse {
+  animation-name: partners-marquee-right;
+}
+
+.partner-wordmark {
+  display: flex;
+  min-width: 190px;
+  height: 84px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border: 1px solid rgb(6 26 52 / 0.1);
+  border-radius: 1.5rem;
+  background: var(--section-bg);
+  padding: 0 1.75rem;
+  color: #061a34;
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: 0 16px 36px rgb(6 26 52 / 0.06);
+}
+
+.partner-wordmark-accent {
+  width: 0.45rem;
+  height: 0.45rem;
+  flex: 0 0 auto;
+  border-radius: 9999px;
+  background: #c89750;
+  box-shadow: 0 0 0 5px rgb(200 151 80 / 0.12);
+}
+
+@media (min-width: 768px) {
+  .partner-wordmark {
+    min-width: 230px;
+    height: 96px;
+    padding: 0 2rem;
+    font-size: 1rem;
+  }
+}
+
+@keyframes partners-marquee-left {
+  to {
+    transform: translateX(calc(-100% - var(--partners-gap)));
+  }
+}
+
+@keyframes partners-marquee-right {
+  from {
+    transform: translateX(calc(-100% - var(--partners-gap)));
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .partners-marquee-row {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .partners-marquee-track {
+    animation: none;
+    will-change: auto;
+  }
+
+  .partners-marquee-track--duplicate {
+    display: none;
   }
 }

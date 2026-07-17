@@ -1,21 +1,41 @@
 import { SectionKicker } from "../ui/SectionKicker";
 
-const partnerRows = [
-  ["BIDLI", "ČSOB", "ČPP", "ALLIANZ", "KOOPERATIVA", "mBank"],
-  ["RAIFFEISENBANK", "PILLOW", "NN POJIŠTĚNÍ", "DIRECT", "UNIQA", "VZP"],
-] as const;
+type Partner = {
+  name: string;
+  logo: string;
+};
+
+const partnerRows: Partner[][] = [
+  [
+    { name: "BIDLI", logo: "partners/bidli.svg" },
+    { name: "ČSOB", logo: "partners/csob.svg" },
+    { name: "ČPP", logo: "partners/cpp.svg" },
+    { name: "Allianz", logo: "partners/allianz.svg" },
+    { name: "Kooperativa", logo: "partners/kooperativa.svg" },
+    { name: "mBank", logo: "partners/mbank.svg" },
+  ],
+  [
+    { name: "Raiffeisenbank", logo: "partners/raiffeisenbank.svg" },
+    { name: "Pillow", logo: "partners/pillow.svg" },
+    { name: "NN pojištění", logo: "partners/nn.svg" },
+    { name: "Direct", logo: "partners/direct.svg" },
+    { name: "UNIQA", logo: "partners/uniqa.svg" },
+    { name: "VZP", logo: "partners/vzp.svg" },
+  ],
+];
 
 const partners = partnerRows.flat();
 
-type PartnerWordmarkProps = {
-  name: (typeof partners)[number];
-};
-
-function PartnerWordmark({ name }: PartnerWordmarkProps) {
+function PartnerLogo({ partner }: { partner: Partner }) {
   return (
-    <div className="partner-wordmark">
-      <span className="partner-wordmark-accent" />
-      <span>{name}</span>
+    <div className="partner-logo-card">
+      <img
+        src={`${import.meta.env.BASE_URL}${partner.logo}`}
+        alt=""
+        className="partner-logo"
+        loading="lazy"
+        decoding="async"
+      />
     </div>
   );
 }
@@ -57,9 +77,9 @@ export function PartnersSection() {
                 }`}
               >
                 {row.map((partner) => (
-                  <PartnerWordmark
-                    key={`${copyIndex}-${partner}`}
-                    name={partner}
+                  <PartnerLogo
+                    key={`${copyIndex}-${partner.name}`}
+                    partner={partner}
                   />
                 ))}
               </div>
@@ -70,7 +90,7 @@ export function PartnersSection() {
 
       <ul className="sr-only">
         {partners.map((partner) => (
-          <li key={partner}>{partner}</li>
+          <li key={partner.name}>{partner.name}</li>
         ))}
       </ul>
     </section>

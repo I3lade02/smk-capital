@@ -6,6 +6,7 @@ import {
 } from "@tabler/icons-react";
 import { MortgageCalculationForm } from "../components/forms/MortgageCalculationForm";
 import { SectionKicker } from "../components/ui/SectionKicker";
+import { Seo } from "../components/Seo";
 
 const processItems = [
   {
@@ -28,6 +29,11 @@ const processItems = [
 export function MortgageCalculationPage() {
   return (
     <>
+      <Seo
+        title="Hypoteční propočet – orientační výpočet splátek | SMK Capital"
+        description="Zadejte příjmy, splátky a závazky a získejte orientační podklad pro hypoteční konzultaci. Ozveme se s dalším postupem."
+        path="/hypoteka-propocet"
+      />
       <section className="relative overflow-hidden bg-[var(--section-bg)] px-5 pb-16 pt-36 md:px-12 lg:px-16 lg:pt-40">
         <div className="absolute inset-x-0 top-0 h-px bg-[#c89750]/25" />
         <div className="grid items-start gap-10 lg:grid-cols-[0.82fr_1.18fr]">

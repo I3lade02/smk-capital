@@ -14,7 +14,7 @@ export const serviceCategories: ServiceCategory[] = [
     title: "Pojištění",
     description:
       "Kompletní krytí pro auto, domov, rodinu i podnikání na jednom místě.",
-    href: "/#/sluzby",
+    href: "/sluzby",
     icon: IconShieldCheck,
     items: [
       "Povinné ručení a havarijní pojištění vozidel",
@@ -31,7 +31,7 @@ export const serviceCategories: ServiceCategory[] = [
     title: "Financování",
     description:
       "Úvěry a hypotéky nastavujeme podle vaší situace i dlouhodobého plánu.",
-    href: "/#/sluzby",
+    href: "/sluzby",
     icon: IconBuildingBank,
     items: [
       "Spotřebitelské úvěry",
@@ -44,7 +44,7 @@ export const serviceCategories: ServiceCategory[] = [
     title: "Investice a služby",
     description:
       "Dlouhodobá péče o finance, smlouvy i související administrativu.",
-    href: "/#/sluzby",
+    href: "/sluzby",
     icon: IconCoin,
     items: [
       "Investice (dlouhodobé zhodnocení kapitálu)",

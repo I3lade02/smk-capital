@@ -7,12 +7,18 @@ import { SectionKicker } from "../components/ui/SectionKicker";
 import { processSteps } from "../constants/home";
 import { serviceCategories } from "../constants/services";
 import { scrollToSectionFromHref } from "../lib/sectionLinks";
+import { Seo } from "../components/Seo";
 
 export function ServicesPage() {
   const contactHref = "#contact";
 
   return (
     <>
+      <Seo
+        title="Služby – pojištění, hypotéky, úvěry a investice | SMK Capital"
+        description="Přehled služeb SMK Capital: pojištění, financování, investice, energie i správa smluv. Vyberte oblast a domluvíme si další postup."
+        path="/sluzby"
+      />
       <PageHero
         kicker="Přehled služeb"
         title="Pojištění, financování i servis smluv pod jednou střechou."

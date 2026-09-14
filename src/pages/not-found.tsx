@@ -1,10 +1,18 @@
 import { IconArrowLeft, IconHome } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { SectionKicker } from "../components/ui/SectionKicker";
+import { Seo } from "../components/Seo";
 
 export function NotFoundPage() {
   return (
-    <section className="relative flex min-h-[76vh] items-center overflow-hidden bg-[var(--section-bg)] px-5 pb-20 pt-36 md:px-12 lg:px-16 lg:pt-40">
+    <>
+      <Seo
+        title="Stránka nenalezena | SMK Capital"
+        description="Odkaz, který hledáte, není k dispozici nebo byl přesunut. Vraťte se na hlavní stránku SMK Capital."
+        path="/nenalezeno"
+        noindex
+      />
+      <section className="relative flex min-h-[76vh] items-center overflow-hidden bg-[var(--section-bg)] px-5 pb-20 pt-36 md:px-12 lg:px-16 lg:pt-40">
       <div
         className="pointer-events-none absolute -right-16 top-20 font-serif text-[15rem] leading-none text-[#061a34]/4 md:text-[24rem]"
         aria-hidden="true"
@@ -55,6 +63,7 @@ export function NotFoundPage() {
           </div>
         </div>
       </div>
-    </section>
+      </section>
+    </>
   );
 }

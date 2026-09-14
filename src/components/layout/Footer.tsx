@@ -52,7 +52,7 @@ export function Footer() {
           <ul className="space-y-2 text-sm text-[#061a34]/65">
             {serviceCategories.map((service) => (
               <li key={service.title}>
-                <a href={service.href}>{service.title}</a>
+                <Link to={service.href}>{service.title}</Link>
               </li>
             ))}
           </ul>

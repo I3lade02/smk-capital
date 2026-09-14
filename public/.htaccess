@@ -1,0 +1,14 @@
+# Single-page app routing fallback for smkcapital.cz.
+# Real files (assets, contact.php, sitemap.xml, robots.txt, ...) are served
+# as-is; any other path falls back to index.html so React Router can render
+# the matching page client-side.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  RewriteRule ^ index.html [L]
+</IfModule>

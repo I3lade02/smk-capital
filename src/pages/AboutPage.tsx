@@ -12,6 +12,7 @@ import { benefits } from "../constants/benefits";
 import { aboutHighlights, aboutParagraphs } from "../constants/home";
 import { siteConfig } from "../constants/site";
 import { useInteractiveAutoplayVideo } from "../hooks/useInteractiveAutoplayVideo";
+import { Seo } from "../components/Seo";
 
 const watchedAreas = [
   "výročí smluv",
@@ -59,6 +60,11 @@ export function AboutPage() {
 
   return (
     <>
+      <Seo
+        title="O nás | SMK Capital"
+        description="SMK Capital je finanční dům, který se stará o pojištění, hypotéky, úvěry, investice i správu smluv klientů bez chaosu a zbytečné byrokracie."
+        path="/o-nas"
+      />
       <PageHero
         kicker="O nás"
         title="Jsme finanční dům pro náročné."

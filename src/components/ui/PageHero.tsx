@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "./Button";
 import { Logo } from "./Logo";
 import { SectionKicker } from "./SectionKicker";
@@ -33,6 +34,8 @@ export function PageHero({
   media,
   children,
 }: PageHeroProps) {
+  const navigate = useNavigate();
+
   return (
     <section className="relative bg-[var(--section-bg)] px-5 pb-16 pt-36 md:px-12 lg:px-16 lg:pt-40">
       <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
@@ -49,7 +52,15 @@ export function PageHero({
 
           <div className="mt-9 flex flex-col gap-4 sm:flex-row">
             <Button href="#contact">Požadavek na zavolání</Button>
-            <Button href="/#/sluzby" variant="secondary">
+            <Button
+              href="/sluzby"
+              variant="secondary"
+              onClick={(event) => {
+                event.preventDefault();
+                navigate("/sluzby");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            >
               Zobrazit služby
             </Button>
           </div>

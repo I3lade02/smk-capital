@@ -37,9 +37,16 @@ jobs:
 
       - name: Build static site
         run: npm run build
+        env:
+          # This showcase build is served from a subpath (github.io/<repo>/smk-capital/),
+          # unlike production on smkcapital.cz which lives at the domain root.
+          VITE_BASE_PATH: /smk-capital/
 
       - name: Add .nojekyll file
         run: touch ./dist/.nojekyll
+
+      - name: Add SPA fallback for client-side routes
+        run: cp ./dist/index.html ./dist/404.html
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3

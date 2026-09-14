@@ -6,6 +6,7 @@ import {
 } from "@tabler/icons-react";
 import { CarInsuranceForm } from "../components/forms/CarInsuranceForm";
 import { SectionKicker } from "../components/ui/SectionKicker";
+import { Seo } from "../components/Seo";
 
 const processItems = [
   {
@@ -28,6 +29,11 @@ const processItems = [
 export function CarInsurancePage() {
   return (
     <>
+      <Seo
+        title="Autopojištění – rychlá poptávka | SMK Capital"
+        description="Poptejte povinné ručení i havarijní pojištění vozidla. Stačí SPZ a kontakt, nabídku připravíme na míru."
+        path="/autopojisteni"
+      />
       <section className="relative overflow-hidden bg-[var(--section-bg)] px-5 pb-16 pt-36 md:px-12 lg:px-16 lg:pt-40">
         <div className="absolute inset-x-0 top-0 h-px bg-[#c89750]/25" />
         <div className="grid items-start gap-10 lg:grid-cols-[0.82fr_1.18fr]">

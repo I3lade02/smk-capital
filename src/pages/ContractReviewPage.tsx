@@ -6,6 +6,7 @@ import {
 } from "@tabler/icons-react";
 import { ContractReviewForm } from "../components/forms/ContractReviewForm";
 import { SectionKicker } from "../components/ui/SectionKicker";
+import { Seo } from "../components/Seo";
 
 const reviewBenefits = [
   "PDF i fotografie smluv",
@@ -17,6 +18,11 @@ const reviewBenefits = [
 export function ContractReviewPage() {
   return (
     <>
+      <Seo
+        title="Bezplatná revize smluv | SMK Capital"
+        description="Pošlete nám PDF nebo fotografie smluv. Zkontrolujeme cenu, krytí i podmínky a doporučíme, kde má smysl úspora nebo lepší řešení."
+        path="/revize-smluv"
+      />
       <section className="relative overflow-hidden bg-[var(--section-bg)] px-5 pb-16 pt-36 md:px-12 lg:px-16 lg:pt-40">
         <div className="absolute inset-x-0 top-0 h-px bg-[#c89750]/25" />
 

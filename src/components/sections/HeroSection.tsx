@@ -1,3 +1,5 @@
+import { IconChevronRight } from "@tabler/icons-react";
+import { Link } from "react-router-dom";
 import { heroHighlights } from "../../constants/home";
 import { siteConfig } from "../../constants/site";
 import { useInteractiveAutoplayVideo } from "../../hooks/useInteractiveAutoplayVideo";
@@ -41,6 +43,15 @@ export function HeroSection() {
               Požadavek na zavolání
             </Button>
           </div>
+
+          <Link
+            to="/revize-smluv"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="mt-4 inline-flex items-center justify-center gap-3 rounded-full bg-[#061a34] px-8 py-4 text-base font-semibold text-white shadow-[0_18px_45px_rgba(6,26,52,0.18)] transition hover:bg-[#0b274b]"
+          >
+            Chci nezávaznou revizi
+            <IconChevronRight size={17} strokeWidth={2} aria-hidden="true" />
+          </Link>
 
           <div className="mt-8 flex flex-wrap gap-3">
             {heroHighlights.map((item) => (

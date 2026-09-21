@@ -10,7 +10,6 @@ import {
   IconShieldCheck,
   IconStethoscope,
 } from "@tabler/icons-react";
-import { Link } from "react-router-dom";
 import { SectionKicker } from "../ui/SectionKicker";
 
 const reviewAreas = [
@@ -109,15 +108,6 @@ export function ContractReviewSection() {
                 </p>
               </div>
             </div>
-
-            <Link
-              to="/revize-smluv"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="mt-7 inline-flex items-center justify-center gap-3 rounded-full border border-white/20 bg-white/0 px-7 py-4 text-sm font-semibold text-white transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d7b174]/70 focus-visible:ring-offset-4 focus-visible:ring-offset-[#061a34]"
-            >
-              Chci nezávaznou revizi
-              <IconChevronRight size={17} strokeWidth={2} aria-hidden="true" />
-            </Link>
           </div>
         </div>
 
